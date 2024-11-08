@@ -5,4 +5,8 @@
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\UF09Lib\UF09Lib.csproj" />
+  </ItemGroup>
+
 </Project>
