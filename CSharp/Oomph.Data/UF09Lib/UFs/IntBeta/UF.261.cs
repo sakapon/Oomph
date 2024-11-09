@@ -3,7 +3,7 @@
 // short, path compression, from 101
 // O(log n)
 
-namespace Oomph.Data.UF09Lib.UFs.v211
+namespace Oomph.Data.UF09Lib.UFs.v261
 {
 	class UF
 	{
