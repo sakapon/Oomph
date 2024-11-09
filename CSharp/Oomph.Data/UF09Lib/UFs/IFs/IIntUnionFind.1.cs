@@ -1,4 +1,4 @@
-﻿namespace Oomph.Data.UF09Lib.UFs.IFs
+﻿namespace Oomph.Data.UF09Lib.UFs.IFs.v1
 {
 	public interface IIntUnionFind
 	{
