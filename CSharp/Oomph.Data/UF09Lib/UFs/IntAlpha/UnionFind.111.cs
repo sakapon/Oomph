@@ -2,7 +2,7 @@
 
 // path compression
 // O(log n)
-namespace Oomph.Data.UF09Lib.UFs.V111
+namespace Oomph.Data.UF09Lib.UFs.v111
 {
 	public class UnionFind
 	{

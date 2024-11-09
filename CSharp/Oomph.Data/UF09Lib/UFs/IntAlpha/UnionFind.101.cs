@@ -2,7 +2,7 @@
 
 // no technique
 // O(n)
-namespace Oomph.Data.UF09Lib.UFs.V101
+namespace Oomph.Data.UF09Lib.UFs.v101
 {
 	public class UnionFind
 	{
