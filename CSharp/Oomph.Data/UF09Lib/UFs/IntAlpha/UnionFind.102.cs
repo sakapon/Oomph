@@ -2,6 +2,7 @@
 
 // union by size
 // O(log n)
+
 namespace Oomph.Data.UF09Lib.UFs.v102
 {
 	public class UnionFind

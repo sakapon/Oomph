@@ -3,6 +3,7 @@
 // path compression, union by size
 // parents[root] = -size
 // O(α(n))
+
 namespace Oomph.Data.UF09Lib.UFs.v123
 {
 	public class UnionFind
