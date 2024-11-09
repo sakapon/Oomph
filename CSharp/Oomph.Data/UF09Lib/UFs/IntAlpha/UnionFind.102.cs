@@ -1,8 +1,8 @@
 ﻿using System;
 
-// path compression, union by size
-// O(α(n))
-namespace Oomph.Data.UF09Lib.UFs.v131
+// union by size
+// O(log n)
+namespace Oomph.Data.UF09Lib.UFs.v102
 {
 	public class UnionFind
 	{
@@ -16,7 +16,7 @@ namespace Oomph.Data.UF09Lib.UFs.v131
 			Array.Fill(sizes, 1);
 		}
 
-		public int Find(int x) => parents[x] == -1 ? x : parents[x] = Find(parents[x]);
+		public int Find(int x) => parents[x] == -1 ? x : Find(parents[x]);
 		public bool AreSame(int x, int y) => Find(x) == Find(y);
 		public int GetGroupSize(int x) => sizes[Find(x)];
 
