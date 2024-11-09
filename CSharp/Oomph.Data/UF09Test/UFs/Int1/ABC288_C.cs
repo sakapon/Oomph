@@ -5,8 +5,8 @@ using Oomph.Data.UF09Lib.UFs.v301;
 
 namespace UF09Test.UFs.Int1
 {
-	// Test: https://atcoder.jp/contests/abl/tasks/abl_c
-	class ABL_C
+	// Test: https://atcoder.jp/contests/abc288/tasks/abc288_c
+	class ABC288_C
 	{
 		static int[] Read() => Array.ConvertAll(Console.ReadLine().Split(), int.Parse);
 		static (int, int) Read2() { var a = Read(); return (a[0], a[1]); }
@@ -19,7 +19,7 @@ namespace UF09Test.UFs.Int1
 			var uf = new UnionFind(n + 1);
 			foreach (var (a, b) in es)
 				uf.Union(a, b);
-			return uf.GroupsCount - 2;
+			return m - n - 1 + uf.GroupsCount;
 		}
 	}
 }
