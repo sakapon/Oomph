@@ -6,7 +6,7 @@
 	/// <typeparam name="TKey">集合の要素の型。</typeparam>
 	public interface IUnionFind<TKey>
 	{
-		public class Node
+		public interface INode
 		{
 			public TKey Key { get; }
 		}
@@ -16,7 +16,7 @@
 		/// </summary>
 		/// <param name="x">要素。</param>
 		/// <returns><paramref name="x"/> が属するグループ。</returns>
-		public Node Find(TKey x);
+		public INode Find(TKey x);
 
 		/// <summary>
 		/// 指定された 2 つの要素が属するグループを合併します。
