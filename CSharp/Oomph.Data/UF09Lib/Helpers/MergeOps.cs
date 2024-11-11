@@ -21,7 +21,7 @@ namespace Oomph.Data.UF09Lib.Helpers
 			return o1;
 		}
 
-		public static Dictionary<TK, int> Merge<TK>(Dictionary<TK, int> o1, Dictionary<TK, int> o2)
+		public static Dictionary<TKey, int> Merge<TKey>(Dictionary<TKey, int> o1, Dictionary<TKey, int> o2)
 		{
 			if (o1.Count < o2.Count) (o1, o2) = (o2, o1);
 			foreach (var (k, v) in o2)
