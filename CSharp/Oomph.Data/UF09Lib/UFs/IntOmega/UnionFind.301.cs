@@ -8,19 +8,19 @@ namespace Oomph.Data.UF09Lib.UFs.v301
 	[System.Diagnostics.DebuggerDisplay(@"ItemsCount = {ItemsCount}, GroupsCount = {GroupsCount}")]
 	public class UnionFind
 	{
-		[System.Diagnostics.DebuggerDisplay(@"\{{Key}\}")]
 		public class Node
 		{
 			public int Key { get; internal set; }
 			internal Node Parent;
 			public int Size { get; internal set; } = 1;
+			public override string ToString() => Parent == null ? $"{Key}, Size = {Size}" : $"{Key} (not root)";
 		}
 
 		readonly Node[] nodes;
 		public int ItemsCount => nodes.Length;
 		public int GroupsCount { get; private set; }
 
-		// (parent, child)
+		// (parent root, child root)
 		public event Action<int, int> United;
 
 		public UnionFind(int n)
