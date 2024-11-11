@@ -21,14 +21,19 @@ namespace Oomph.Data.UF09Lib.UFs.v311
 		public int ItemsCount => nodes.Length;
 		public int GroupsCount { get; private set; }
 		public Func<TValue, TValue, TValue> MergeValues { get; }
+		public bool KeepOrder { get; }
 
-		public UnionFind(int n, Func<TValue, TValue, TValue> mergeValues, TValue[] values = null)
+		// (parent root, child root)
+		public event Action<int, int> United;
+
+		public UnionFind(int n, Func<TValue, TValue, TValue> mergeValues, bool keepOrder, TValue[] values = null)
 		{
 			values ??= new TValue[n];
 			nodes = new Node[n];
 			for (int i = 0; i < n; ++i) nodes[i] = new Node { Key = i, Value = values[i] };
 			GroupsCount = n;
 			MergeValues = mergeValues;
+			KeepOrder = keepOrder;
 		}
 
 		Node Find(Node n) => n.Parent == null ? n : n.Parent = Find(n.Parent);
@@ -41,19 +46,23 @@ namespace Oomph.Data.UF09Lib.UFs.v311
 			var ry = Find(y);
 			if (rx == ry) return false;
 
+			TValue v = default;
 			// 左右の順序を保って値をマージします。
-			var v = MergeValues(rx.Value, ry.Value);
+			if (KeepOrder) v = MergeValues(rx.Value, ry.Value);
 
 			if (rx.Size < ry.Size) (rx, ry) = (ry, rx);
 			ry.Parent = rx;
 			rx.Size += ry.Size;
 			--GroupsCount;
+			// 親子の順序で値をマージします。
+			if (!KeepOrder) v = MergeValues(rx.Value, ry.Value);
 			rx.Value = v;
+			United?.Invoke(rx.Key, ry.Key);
 			return true;
 		}
 
 		// 根とサイズと値の情報のみを取得します。
-		public Node[] GetSetInfoes() => Array.FindAll(nodes, n => n.Parent == null);
+		public Node[] GetGroupInfoes() => Array.FindAll(nodes, n => n.Parent == null);
 		public ILookup<Node, int> ToGroups() => nodes.ToLookup(Find, n => n.Key);
 	}
 }
