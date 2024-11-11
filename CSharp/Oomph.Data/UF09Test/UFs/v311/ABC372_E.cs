@@ -18,14 +18,14 @@ namespace UF09Test.UFs.v311
 			var qs = Array.ConvertAll(new bool[qc], _ => Read3());
 
 			var r = new List<int>();
-			var iv = Enumerable.Range(0, n + 1).Select(i => new List<int> { i }).ToArray();
-			var uf = new UnionFind<List<int>>(n + 1, (l, l2) =>
+			var iv = Array.ConvertAll(new bool[n + 1], _ => new int[20]);
+			for (int i = 1; i <= n; i++) iv[i][^1] = i;
+
+			var uf = new UnionFind<int[]>(n + 1, (a, b) =>
 			{
-				l.AddRange(l2);
-				l.Sort();
-				l.Reverse();
-				while (l.Count > 10) l.RemoveAt(l.Count - 1);
-				return l;
+				Array.Copy(b, 10, a, 0, 10);
+				Array.Sort(a);
+				return a;
 			}, false, iv);
 
 			foreach (var (t, u, v) in qs)
@@ -36,8 +36,8 @@ namespace UF09Test.UFs.v311
 				}
 				else
 				{
-					var l = uf.Find(u).Value;
-					r.Add(l.Count >= v ? l[v - 1] : -1);
+					var a = uf.Find(u).Value;
+					r.Add(a[^v] != 0 ? a[^v] : -1);
 				}
 			}
 			return string.Join("\n", r);
