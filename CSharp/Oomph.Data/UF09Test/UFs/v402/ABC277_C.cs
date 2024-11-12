@@ -17,7 +17,7 @@ namespace UF09Test.UFs.v402
 			var es = Array.ConvertAll(new bool[n], _ => Read2());
 
 			var uf = new UnionFind<int>();
-			uf.AddKey(1);
+			uf.Add(1);
 
 			foreach (var (a, b) in es)
 			{
