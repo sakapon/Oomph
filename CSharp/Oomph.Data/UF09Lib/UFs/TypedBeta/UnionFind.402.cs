@@ -34,8 +34,8 @@ namespace Oomph.Data.UF09Lib.UFs.v402
 		// (parent root, child root)
 		public event Action<TKey, TKey> United;
 
-		public bool ContainsKey(TKey x) => nodes.ContainsKey(x);
-		public bool AddKey(TKey x)
+		public bool Contains(TKey x) => nodes.ContainsKey(x);
+		public bool Add(TKey x)
 		{
 			if (nodes.ContainsKey(x)) return false;
 			nodes[x] = new Node { Key = x };
