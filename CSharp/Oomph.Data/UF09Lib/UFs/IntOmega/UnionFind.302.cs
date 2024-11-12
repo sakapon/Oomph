@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
-// int vertexes
+// int vertexes, undo
+// O(log n)
 
 namespace Oomph.Data.UF09Lib.UFs.v302
 {
@@ -19,9 +21,11 @@ namespace Oomph.Data.UF09Lib.UFs.v302
 		readonly Node[] nodes;
 		public int ItemsCount => nodes.Length;
 		public int GroupsCount { get; private set; }
+		readonly Stack<(int rx, int ry)> history = new Stack<(int rx, int ry)>();
 
 		// (parent root, child root)
 		public event Action<int, int> United;
+		public event Action<int, int> Undone;
 
 		public UnionFind(int n)
 		{
@@ -30,21 +34,50 @@ namespace Oomph.Data.UF09Lib.UFs.v302
 			GroupsCount = n;
 		}
 
-		Node Find(Node n) => n.Parent == null ? n : n.Parent = Find(n.Parent);
+		// 経路圧縮なし
+		Node Find(Node n) => n.Parent == null ? n : Find(n.Parent);
 		public Node Find(int x) => Find(nodes[x]);
 		public bool AreSame(int x, int y) => Find(x) == Find(y);
 
+		// 合併しない場合も履歴を記録します。
 		public bool Union(int x, int y)
 		{
 			var rx = Find(x);
 			var ry = Find(y);
-			if (rx == ry) return false;
+			if (rx == ry)
+			{
+				history.Push((rx.Key, ry.Key));
+				return false;
+			}
 
 			if (rx.Size < ry.Size) (rx, ry) = (ry, rx);
 			ry.Parent = rx;
 			rx.Size += ry.Size;
 			--GroupsCount;
+			history.Push((rx.Key, ry.Key));
 			United?.Invoke(rx.Key, ry.Key);
+			return true;
+		}
+
+		// 合併しない場合も履歴が記録されているため、分離されるとは限りません。
+		public bool Undo() => Undo(out var _, out var _);
+		public bool Undo(out int rx, out int ry)
+		{
+			if (history.Count == 0)
+			{
+				rx = ry = -1;
+				return false;
+			}
+
+			(rx, ry) = history.Pop();
+			if (rx == ry) return false;
+
+			var nrx = nodes[rx];
+			var nry = nodes[ry];
+			nry.Parent = null;
+			nrx.Size -= nry.Size;
+			++GroupsCount;
+			Undone?.Invoke(rx, ry);
 			return true;
 		}
 
