@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Oomph.Data.UF09Lib.UFs.v301;
 
 namespace UF09Test.UFs.v301.Int1
@@ -12,28 +11,29 @@ namespace UF09Test.UFs.v301.Int1
 	{
 		static int[] Read() => Array.ConvertAll(Console.ReadLine().Split(), int.Parse);
 		static (int, int) Read2() { var a = Read(); return (a[0], a[1]); }
-		static void Main()
+		static (int, int, int) Read3() { var a = Read(); return (a[0], a[1], a[2]); }
+		static void Main() => Console.WriteLine(Solve());
+		static object Solve()
 		{
 			var (n, qc) = Read2();
-			var qs = Array.ConvertAll(new bool[qc], _ => Read());
-			var sb = new StringBuilder();
+			var qs = Array.ConvertAll(new bool[qc], _ => Read3());
 
+			var r = new List<bool>();
 			var uf = new UnionFind(n);
 
-			foreach (var q in qs)
+			foreach (var (t, u, v) in qs)
 			{
-				if (q[0] == 0)
+				if (t == 0)
 				{
-					uf.Union(q[1], q[2]);
+					uf.Union(u, v);
 				}
 				else
 				{
-					var b = uf.AreSame(q[1], q[2]);
-					sb.AppendLine(b ? "Yes" : "No");
-					//sb.Append(b ? 1 : 0).AppendLine();
+					r.Add(uf.AreSame(u, v));
 				}
 			}
-			Console.Write(sb);
+			return string.Join("\n", r.Select(b => b ? "Yes" : "No"));
+			//return string.Join("\n", r.Select(b => b ? 1 : 0));
 		}
 	}
 }
