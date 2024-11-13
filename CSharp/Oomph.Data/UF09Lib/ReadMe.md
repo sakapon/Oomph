@@ -2,6 +2,9 @@
 A laboratory of Union-Find.
 
 ### UFs
+Union-Find Trees.
+
+#### Int Alpha
 - 100 no technique O(n)
 - 101 path compression O(log n)
 - 102 union by size O(log n)
