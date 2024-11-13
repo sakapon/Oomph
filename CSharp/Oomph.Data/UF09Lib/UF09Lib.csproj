@@ -16,6 +16,7 @@
     <PackageProjectUrl>https://github.com/sakapon/Oomph</PackageProjectUrl>
     <PackageTags>Algorithms Union-Find</PackageTags>
     <PackageReleaseNotes>The first release.</PackageReleaseNotes>
+    <PackageReadmeFile>ReadMe.md</PackageReadmeFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
@@ -23,5 +24,12 @@
     <DebugSymbols>false</DebugSymbols>
     <DocumentationFile>bin\Release\Oomph.Data.$(MSBuildProjectName).xml</DocumentationFile>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Update="ReadMe.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
 
 </Project>
