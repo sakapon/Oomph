@@ -42,20 +42,20 @@ namespace Oomph.Data.UF09Lib.UFs.v302
 		// 合併しない場合も履歴を記録します。
 		public bool Union(int x, int y)
 		{
-			var rx = Find(x);
-			var ry = Find(y);
-			if (rx == ry)
+			var nx = Find(x);
+			var ny = Find(y);
+			if (nx == ny)
 			{
-				history.Push((rx.Key, ry.Key));
+				history.Push((nx.Key, ny.Key));
 				return false;
 			}
 
-			if (rx.Size < ry.Size) (rx, ry) = (ry, rx);
-			ry.Parent = rx;
-			rx.Size += ry.Size;
+			if (nx.Size < ny.Size) (nx, ny) = (ny, nx);
+			ny.Parent = nx;
+			nx.Size += ny.Size;
 			--GroupsCount;
-			history.Push((rx.Key, ry.Key));
-			United?.Invoke(rx.Key, ry.Key);
+			history.Push((nx.Key, ny.Key));
+			United?.Invoke(nx.Key, ny.Key);
 			return true;
 		}
 
@@ -72,10 +72,10 @@ namespace Oomph.Data.UF09Lib.UFs.v302
 			(rx, ry) = history.Pop();
 			if (rx == ry) return false;
 
-			var nrx = nodes[rx];
-			var nry = nodes[ry];
-			nry.Parent = null;
-			nrx.Size -= nry.Size;
+			var nx = nodes[rx];
+			var ny = nodes[ry];
+			ny.Parent = null;
+			nx.Size -= ny.Size;
 			++GroupsCount;
 			Undone?.Invoke(rx, ry);
 			return true;

@@ -42,22 +42,22 @@ namespace Oomph.Data.UF09Lib.UFs.v311
 
 		public bool Union(int x, int y)
 		{
-			var rx = Find(x);
-			var ry = Find(y);
-			if (rx == ry) return false;
+			var nx = Find(x);
+			var ny = Find(y);
+			if (nx == ny) return false;
 
 			TValue v = default;
 			// 左右の順序を保って値をマージします。
-			if (KeepOrder) v = MergeValues(rx.Value, ry.Value);
+			if (KeepOrder) v = MergeValues(nx.Value, ny.Value);
 
-			if (rx.Size < ry.Size) (rx, ry) = (ry, rx);
-			ry.Parent = rx;
-			rx.Size += ry.Size;
+			if (nx.Size < ny.Size) (nx, ny) = (ny, nx);
+			ny.Parent = nx;
+			nx.Size += ny.Size;
 			--GroupsCount;
 			// 親子の順序で値をマージします。
-			if (!KeepOrder) v = MergeValues(rx.Value, ry.Value);
-			rx.Value = v;
-			United?.Invoke(rx.Key, ry.Key);
+			if (!KeepOrder) v = MergeValues(nx.Value, ny.Value);
+			nx.Value = v;
+			United?.Invoke(nx.Key, ny.Key);
 			return true;
 		}
 

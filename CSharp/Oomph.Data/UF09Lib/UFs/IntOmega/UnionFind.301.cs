@@ -36,15 +36,15 @@ namespace Oomph.Data.UF09Lib.UFs.v301
 
 		public bool Union(int x, int y)
 		{
-			var rx = Find(x);
-			var ry = Find(y);
-			if (rx == ry) return false;
+			var nx = Find(x);
+			var ny = Find(y);
+			if (nx == ny) return false;
 
-			if (rx.Size < ry.Size) (rx, ry) = (ry, rx);
-			ry.Parent = rx;
-			rx.Size += ry.Size;
+			if (nx.Size < ny.Size) (nx, ny) = (ny, nx);
+			ny.Parent = nx;
+			nx.Size += ny.Size;
 			--GroupsCount;
-			United?.Invoke(rx.Key, ry.Key);
+			United?.Invoke(nx.Key, ny.Key);
 			return true;
 		}
 

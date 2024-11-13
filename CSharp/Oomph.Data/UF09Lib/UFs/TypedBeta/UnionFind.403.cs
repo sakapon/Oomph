@@ -46,24 +46,24 @@ namespace Oomph.Data.UF09Lib.UFs.v403
 		public bool AreSame(TKey x, TKey y)
 		{
 			if (nodes.Comparer.Equals(x, y)) return true;
-			var nrx = Find(x);
-			var nry = Find(y);
-			return nrx != null && nrx == nry;
+			var nx = Find(x);
+			var ny = Find(y);
+			return nx != null && nx == ny;
 		}
 
 		// 合併するときのみ、暗黙的にノードを作成します。
 		public bool Union(TKey x, TKey y)
 		{
 			if (nodes.Comparer.Equals(x, y)) return false;
-			var rx = Find(x) ?? CreateNode(x);
-			var ry = Find(y) ?? CreateNode(y);
-			if (rx == ry) return false;
+			var nx = Find(x) ?? CreateNode(x);
+			var ny = Find(y) ?? CreateNode(y);
+			if (nx == ny) return false;
 
-			if (rx.Size < ry.Size) (rx, ry) = (ry, rx);
-			ry.Parent = rx;
-			rx.Size += ry.Size;
+			if (nx.Size < ny.Size) (nx, ny) = (ny, nx);
+			ny.Parent = nx;
+			nx.Size += ny.Size;
 			++UnitedCount;
-			United?.Invoke(rx.Key, ry.Key);
+			United?.Invoke(nx.Key, ny.Key);
 			return true;
 		}
 
