@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Oomph.Data.UF09Lib.UFs.v301;
 
-namespace UF09Test.UFs.Grid
+namespace UF09Test.UFs.Grids
 {
 	// Test: https://atcoder.jp/contests/arc112/tasks/arc112_d
 	class ARC112_D

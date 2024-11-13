@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Oomph.Data.UF09Lib.UFs.v311;
 
-namespace UF09Test.UFs.Grid
+namespace UF09Test.UFs.Grids
 {
 	// Test: https://atcoder.jp/contests/aising2019/tasks/aising2019_c
 	class AIS19_C
