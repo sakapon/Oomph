@@ -79,7 +79,7 @@ namespace UF09Test.UFs.Grid
 							}
 					Rec(l, c);
 					while (ec-- > 0)
-						uf.Undo(out var _, out var _);
+						uf.Undo();
 				}
 
 				{
@@ -93,7 +93,7 @@ namespace UF09Test.UFs.Grid
 							}
 					Rec(c, r);
 					while (ec-- > 0)
-						uf.Undo(out var _, out var _);
+						uf.Undo();
 				}
 			}
 		}
