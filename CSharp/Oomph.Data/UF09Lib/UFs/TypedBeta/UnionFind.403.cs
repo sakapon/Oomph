@@ -51,6 +51,7 @@ namespace Oomph.Data.UF09Lib.UFs.v403
 			return nrx != null && nrx == nry;
 		}
 
+		// 合併するときのみ、暗黙的にノードを作成します。
 		public bool Union(TKey x, TKey y)
 		{
 			if (nodes.Comparer.Equals(x, y)) return false;

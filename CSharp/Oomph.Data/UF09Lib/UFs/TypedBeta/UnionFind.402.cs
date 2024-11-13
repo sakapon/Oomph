@@ -18,7 +18,7 @@ namespace Oomph.Data.UF09Lib.UFs.v402
 			public override string ToString() => Parent == null ? $"{Key}, Size = {Size}" : $"{Key} (not root)";
 		}
 
-		// 問合せ時にノードを作成します。
+		// 問合せ時に、暗黙的にノードを作成します。
 		readonly Dictionary<TKey, Node> nodes = new Dictionary<TKey, Node>();
 		Node GetNode(TKey key)
 		{
