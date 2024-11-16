@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using Oomph.Data.UF09Lib.UFs.v301;
 
-namespace UF09Test.UFs.v301.Int1
+namespace UF09Test.UFs.v301.Static2
 {
-	// Test: https://atcoder.jp/contests/abc288/tasks/abc288_c
-	class ABC288_C
+	// Test: https://atcoder.jp/contests/abc177/tasks/abc177_d
+	class ABC177_D
 	{
 		static int[] Read() => Array.ConvertAll(Console.ReadLine().Split(), int.Parse);
 		static (int, int) Read2() { var a = Read(); return (a[0], a[1]); }
@@ -18,8 +18,10 @@ namespace UF09Test.UFs.v301.Int1
 
 			var uf = new UnionFind(n + 1);
 			foreach (var (a, b) in es)
+			{
 				uf.Union(a, b);
-			return m - n - 1 + uf.GroupsCount;
+			}
+			return uf.GetGroupInfoes().Max(g => g.Size);
 		}
 	}
 }
