@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Oomph.Data.UF09Lib.QFs.v201;
+using Oomph.Data.UF09Lib.QFs.v301;
 
-namespace UF09Test.QFs.IntBeta
+namespace UF09Test.QFs.v301
 {
 	// Test: https://atcoder.jp/contests/past202203-open/tasks/past202203_h
 	class PAST010_H
@@ -29,7 +29,7 @@ namespace UF09Test.QFs.IntBeta
 				else
 				{
 					var u = q[1];
-					var g = uf.Find(u);
+					var g = uf.Find(u).Items;
 					g.Sort();
 					r.Add(string.Join(" ", g));
 				}
