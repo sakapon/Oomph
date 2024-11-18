@@ -17,7 +17,7 @@ namespace Oomph.Data.UF09Lib.QFs.v102
 		}
 
 		public List<int> Find(int x) => groups[x];
-		public bool AreSame(int x, int y) => Find(x) == Find(y);
+		public bool AreSame(int x, int y) => groups[x] == groups[y];
 
 		public bool Union(int x, int y)
 		{
