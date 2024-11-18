@@ -18,9 +18,7 @@ namespace UF09Test.UFs.v301.Static1
 
 			var uf = new UnionFind(n + 1);
 			foreach (var (l, r) in es)
-			{
 				uf.Union(l - 1, r);
-			}
 			return uf.AreSame(0, n);
 		}
 	}
