@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Oomph.Data.UF09Lib.UFs.v201;
+using Oomph.Data.UF09Lib.UFs.v301;
 
-namespace UF09Test.UFs.IntBeta
+namespace UF09Test.UFs.v301.L1
 {
 	// Test: https://atcoder.jp/contests/abc288/tasks/abc288_c
 	class ABC288_C
