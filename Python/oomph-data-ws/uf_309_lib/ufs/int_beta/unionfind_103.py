@@ -1,4 +1,4 @@
-class UnionFind():
+class UnionFind:
     """
     Represents a disjoint-set data structure, using union by size and path compression.
 

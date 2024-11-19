@@ -1,6 +1,6 @@
 # https://atcoder.jp/contests/abc238/tasks/abc238_e
 
-from unionfind_103 import UnionFind
+from ....uf_309_lib.ufs.int_beta.unionfind_103 import UnionFind
 
 n, qc = map(int, input().split())
 
