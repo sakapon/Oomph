@@ -1,13 +1,15 @@
-﻿using System.Numerics;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 // int vertexes, data augmentation (relative)
 // TValue には、零元、逆元、加算が求められます。
 // TValue を一般的な作用素として利用するには、(f + g)(x) = f(g(x)) となるように Addition を定義します。
 
-namespace Oomph.Data.UF11Lib.UFs.v321
+namespace Oomph.Data.UF09Lib.UFs.v321
 {
 	[System.Diagnostics.DebuggerDisplay(@"ItemsCount = {ItemsCount}, GroupsCount = {GroupsCount}")]
-	public class UnionFind<TValue> where TValue : IUnaryNegationOperators<TValue, TValue>, IAdditionOperators<TValue, TValue, TValue>, new()
+	public class UnionFind<TValue>
 	{
 		public class Node
 		{
@@ -15,22 +17,26 @@ namespace Oomph.Data.UF11Lib.UFs.v321
 			internal Node Parent;
 			public int Size { get; internal set; } = 1;
 			// 親を基準とした相対値
-			internal TValue Value = new TValue();
+			internal TValue Value;
 			public override string ToString() => Parent == null ? $"{Key}, Size = {Size}, Value = {Value}" : $"{Key} (not root), Value = {Value}";
 		}
 
 		readonly Node[] nodes;
 		public int ItemsCount => nodes.Length;
 		public int GroupsCount { get; private set; }
+		readonly Func<TValue, TValue> inverse;
+		readonly Func<TValue, TValue, TValue> add;
 
 		// (parent root, child root)
 		public event Action<int, int> United;
 
-		public UnionFind(int n)
+		public UnionFind(int n, TValue v0, Func<TValue, TValue> inverse, Func<TValue, TValue, TValue> add)
 		{
 			nodes = new Node[n];
-			for (int i = 0; i < n; ++i) nodes[i] = new Node { Key = i };
+			for (int i = 0; i < n; ++i) nodes[i] = new Node { Key = i, Value = v0 };
 			GroupsCount = n;
+			this.inverse = inverse;
+			this.add = add;
 		}
 
 		Node Find(Node n)
@@ -39,7 +45,7 @@ namespace Oomph.Data.UF11Lib.UFs.v321
 
 			var r = Find(n.Parent);
 			// 注意: 一般的な作用素の場合の順序
-			n.Value += n.Parent.Value;
+			n.Value = add(n.Value, n.Parent.Value);
 			return n.Parent = r;
 		}
 
@@ -56,13 +62,13 @@ namespace Oomph.Data.UF11Lib.UFs.v321
 			{
 				(nx, ny) = (ny, nx);
 				(x, y) = (y, x);
-				x2y = -x2y;
+				x2y = inverse(x2y);
 			}
 			ny.Parent = nx;
 			nx.Size += ny.Size;
 			--GroupsCount;
 			// 注意: 一般的な作用素の場合の順序
-			ny.Value = -nodes[y].Value + x2y + nodes[x].Value;
+			ny.Value = add(inverse(nodes[y].Value), add(x2y, nodes[x].Value));
 			United?.Invoke(nx.Key, ny.Key);
 			return true;
 		}
@@ -74,13 +80,13 @@ namespace Oomph.Data.UF11Lib.UFs.v321
 		public TValue GetX2Y(int x, int y)
 		{
 			if (!AreSame(x, y)) throw new InvalidOperationException($"{x} and {y} are not in the same set.");
-			return nodes[y].Value + -nodes[x].Value;
+			return add(nodes[y].Value, inverse(nodes[x].Value));
 		}
-		public bool Verify(int x, int y, TValue x2y) => AreSame(x, y) && EqualityComparer<TValue>.Default.Equals(nodes[y].Value, x2y + nodes[x].Value);
+		public bool Verify(int x, int y, TValue x2y) => AreSame(x, y) && EqualityComparer<TValue>.Default.Equals(nodes[y].Value, add(x2y, nodes[x].Value));
 		public bool UpdateY(int x, int y, TValue x2y)
 		{
 			if (!AreSame(x, y)) return false;
-			nodes[y].Value = x2y + nodes[x].Value;
+			nodes[y].Value = add(x2y, nodes[x].Value);
 			return true;
 		}
 	}
