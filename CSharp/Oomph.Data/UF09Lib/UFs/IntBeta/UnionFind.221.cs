@@ -74,5 +74,11 @@ namespace Oomph.Data.UF09Lib.UFs.v221
 			return nodes[y].Value - nodes[x].Value;
 		}
 		public bool Verify(int x, int y, long x2y) => AreSame(x, y) && nodes[y].Value == x2y + nodes[x].Value;
+		public bool UpdateY(int x, int y, long x2y)
+		{
+			if (!AreSame(x, y)) return false;
+			nodes[y].Value = x2y + nodes[x].Value;
+			return true;
+		}
 	}
 }
