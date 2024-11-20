@@ -1,9 +1,13 @@
-﻿// int vertexes, data augmentation (relative)
+﻿using System.Numerics;
+
+// int vertexes, data augmentation (relative)
+// TValue には、零元、逆元、加算が求められます。
+// TValue を一般的な作用素として利用するには、(f + g)(x) = f(g(x)) となるように Addition を定義します。
 
 namespace Oomph.Data.UF11Lib.UFs.v321
 {
 	[System.Diagnostics.DebuggerDisplay(@"ItemsCount = {ItemsCount}, GroupsCount = {GroupsCount}")]
-	public class UnionFind
+	public class UnionFind<TValue> where TValue : IUnaryNegationOperators<TValue, TValue>, IAdditionOperators<TValue, TValue, TValue>, new()
 	{
 		public class Node
 		{
@@ -11,7 +15,7 @@ namespace Oomph.Data.UF11Lib.UFs.v321
 			internal Node Parent;
 			public int Size { get; internal set; } = 1;
 			// 親を基準とした相対値
-			internal long Value;
+			internal TValue Value = new();
 			public override string ToString() => Parent == null ? $"{Key}, Size = {Size}, Value = {Value}" : $"{Key} (not root), Value = {Value}";
 		}
 
@@ -34,6 +38,7 @@ namespace Oomph.Data.UF11Lib.UFs.v321
 			if (n.Parent == null) return n;
 
 			var r = Find(n.Parent);
+			// 注意: 一般的な作用素の場合の順序
 			n.Value += n.Parent.Value;
 			return n.Parent = r;
 		}
@@ -41,7 +46,7 @@ namespace Oomph.Data.UF11Lib.UFs.v321
 		public Node Find(int x) => Find(nodes[x]);
 		public bool AreSame(int x, int y) => Find(x) == Find(y);
 
-		public bool Union(int x, int y, long x2y)
+		public bool Union(int x, int y, TValue x2y)
 		{
 			var nx = Find(x);
 			var ny = Find(y);
@@ -56,6 +61,7 @@ namespace Oomph.Data.UF11Lib.UFs.v321
 			ny.Parent = nx;
 			nx.Size += ny.Size;
 			--GroupsCount;
+			// 注意: 一般的な作用素の場合の順序
 			ny.Value = -nodes[y].Value + x2y + nodes[x].Value;
 			United?.Invoke(nx.Key, ny.Key);
 			return true;
@@ -65,11 +71,11 @@ namespace Oomph.Data.UF11Lib.UFs.v321
 		public Node[] GetGroupInfoes() => Array.FindAll(nodes, n => n.Parent == null);
 		public ILookup<Node, int> ToGroups() => nodes.ToLookup(Find, n => n.Key);
 
-		public long GetX2Y(int x, int y)
+		public TValue GetX2Y(int x, int y)
 		{
 			if (!AreSame(x, y)) throw new InvalidOperationException($"{x} and {y} are not in the same set.");
-			return nodes[y].Value - nodes[x].Value;
+			return nodes[y].Value + -nodes[x].Value;
 		}
-		public bool Verify(int x, int y, long x2y) => AreSame(x, y) && nodes[y].Value == x2y + nodes[x].Value;
+		public bool Verify(int x, int y, TValue x2y) => AreSame(x, y) && EqualityComparer<TValue>.Default.Equals(nodes[y].Value, x2y + nodes[x].Value);
 	}
 }
