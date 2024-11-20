@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-// int vertexes, data augmentation (relative), from 301
+// int vertexes, data augmentation (relative, long), from 301
 
 namespace Oomph.Data.UF09Lib.UFs.v221
 {
