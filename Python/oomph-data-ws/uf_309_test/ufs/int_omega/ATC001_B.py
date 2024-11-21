@@ -1,7 +1,7 @@
 # https://atcoder.jp/contests/atc001/tasks/unionfind_a
 # https://atcoder.jp/contests/practice2/tasks/practice2_a
 
-from ....uf_309_lib.ufs.int_beta.unionfind_103 import UnionFind
+from ....uf_309_lib.ufs.int_omega.unionfind_301 import UnionFind
 
 n, qc = map(int, input().split())
 
