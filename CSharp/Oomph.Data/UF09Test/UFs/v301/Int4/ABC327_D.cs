@@ -20,9 +20,9 @@ namespace UF09Test.UFs.v301.Int4
 
 			var uf = new UnionFind(2 * n + 1);
 
-			for (int i = 0; i < m; i++)
+			for (int j = 0; j < m; j++)
 			{
-				var (u, v) = (a[i], b[i]);
+				var (u, v) = (a[j], b[j]);
 				uf.Union(u, v + n);
 				uf.Union(u + n, v);
 			}
