@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Oomph.Data.UF09Lib.UFs.v301;
 
-namespace UF09Test.UFs.v301.Int3
+namespace UF09Test.UFs.v301.L2
 {
 	// Test: https://atcoder.jp/contests/arc056/tasks/arc056_b
 	class ARC056_B

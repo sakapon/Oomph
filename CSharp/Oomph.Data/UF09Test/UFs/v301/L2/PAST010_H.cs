@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Oomph.Data.UF09Lib.UFs.v301;
 
-namespace UF09Test.UFs.v301.Int4
+namespace UF09Test.UFs.v301.L2
 {
 	// Test: https://atcoder.jp/contests/past202203-open/tasks/past202203_h
 	class PAST010_H
