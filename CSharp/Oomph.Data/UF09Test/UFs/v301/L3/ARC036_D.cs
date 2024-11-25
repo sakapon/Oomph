@@ -4,7 +4,7 @@ using System.Linq;
 using Oomph.Data.UF09Lib.UFs.v301;
 
 // bipartite matching, fake vertexes
-namespace UF09Test.UFs.v301.Int4
+namespace UF09Test.UFs.v301.L3
 {
 	// Test: https://atcoder.jp/contests/arc036/tasks/arc036_d
 	class ARC036_D

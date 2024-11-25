@@ -3,7 +3,7 @@ using System.Linq;
 using System.Text;
 using Oomph.Data.UF09Lib.UFs.v301;
 
-namespace UF09Test.UFs.v301.Int4
+namespace UF09Test.UFs.v301.L4
 {
 	// Test: https://atcoder.jp/contests/typical90/tasks/typical90_bp
 	class T90_068
