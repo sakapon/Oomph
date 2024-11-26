@@ -47,10 +47,10 @@ namespace Oomph.Data.UF09Lib.UFs.v412
 		}
 
 		public bool Contains(TKey x) => nodes.ContainsKey(x);
-		public bool Add(TKey x, TValue v)
+		public bool Add(TKey key, TValue value)
 		{
-			if (nodes.ContainsKey(x)) return false;
-			nodes[x] = new Node { Key = x, Value = v };
+			if (nodes.ContainsKey(key)) return false;
+			nodes[key] = new Node { Key = key, Value = value };
 			return true;
 		}
 
