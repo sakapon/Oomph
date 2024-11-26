@@ -58,8 +58,8 @@ namespace Oomph.Data.UF09Lib.UFs.v414
 		public bool Union(TKey x, TKey y)
 		{
 			if (nodes.Comparer.Equals(x, y)) return false;
-			var nx = Find(x) ?? throw new ArgumentException($"The key {x} is not found.", nameof(x));
-			var ny = Find(y) ?? throw new ArgumentException($"The key {y} is not found.", nameof(y));
+			var nx = Find(x) ?? throw new KeyNotFoundException($"The key {x} is not found.");
+			var ny = Find(y) ?? throw new KeyNotFoundException($"The key {y} is not found.");
 			if (nx == ny) return false;
 
 			TValue v = default;
