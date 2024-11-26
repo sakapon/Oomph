@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 
 // typed vertexes, data augmentation
-// 静的に頂点を登録する方式
+// 動的に頂点を登録する方式
 
 namespace Oomph.Data.UF09Lib.UFs.v412
 {
-	[System.Diagnostics.DebuggerDisplay(@"ItemsCount = {ItemsCount}, GroupsCount = {GroupsCount}")]
+	[System.Diagnostics.DebuggerDisplay(@"ItemsCount = {ItemsCount}, UnitedCount = {UnitedCount}")]
 	public class UnionFind<TKey, TValue>
 	{
 		public class Node
@@ -19,9 +19,20 @@ namespace Oomph.Data.UF09Lib.UFs.v412
 			public override string ToString() => Parent == null ? $"{Key}, Size = {Size}, Value = {Value}" : $"{Key} (not root)";
 		}
 
+		// 問合せ時に、暗黙的にノードを作成します。
 		readonly Dictionary<TKey, Node> nodes = new Dictionary<TKey, Node>();
+		Node GetNode(TKey key)
+		{
+			if (!nodes.TryGetValue(key, out var n))
+				nodes[key] = n = new Node { Key = key, Value = v0 };
+			return n;
+		}
+
+		// 登録されている頂点の数
 		public int ItemsCount => nodes.Count;
-		public int GroupsCount { get; private set; }
+		public int UnitedCount { get; private set; }
+
+		readonly TValue v0;
 		public Func<TValue, TValue, TValue> MergeValues { get; }
 		public bool KeepOrder { get; }
 
@@ -29,20 +40,23 @@ namespace Oomph.Data.UF09Lib.UFs.v412
 		public event Action<TKey, TKey> United;
 
 		// キーの重複不可
-		public UnionFind(IEnumerable<(TKey, TValue)> collection, Func<TValue, TValue, TValue> mergeValues, bool keepOrder)
+		public UnionFind(TValue v0, Func<TValue, TValue, TValue> mergeValues, bool keepOrder)
 		{
-			foreach (var (key, value) in collection)
-			{
-				if (nodes.ContainsKey(key)) throw new ArgumentException($"The key {key} is duplicated.", nameof(collection));
-				nodes[key] = new Node { Key = key, Value = value };
-			}
-			GroupsCount = nodes.Count;
+			this.v0 = v0;
 			MergeValues = mergeValues;
 			KeepOrder = keepOrder;
 		}
 
+		public bool Contains(TKey x) => nodes.ContainsKey(x);
+		public bool Add(TKey x, TValue v)
+		{
+			if (nodes.ContainsKey(x)) return false;
+			nodes[x] = new Node { Key = x, Value = v };
+			return true;
+		}
+
 		Node Find(Node n) => n.Parent == null ? n : n.Parent = Find(n.Parent);
-		public Node Find(TKey x) => Find(nodes[x]);
+		public Node Find(TKey x) => Find(GetNode(x));
 		public bool AreSame(TKey x, TKey y) => Find(x) == Find(y);
 
 		public bool Union(TKey x, TKey y)
@@ -58,7 +72,7 @@ namespace Oomph.Data.UF09Lib.UFs.v412
 			if (nx.Size < ny.Size) (nx, ny) = (ny, nx);
 			ny.Parent = nx;
 			nx.Size += ny.Size;
-			--GroupsCount;
+			++UnitedCount;
 			// 親子の順序で値をマージします。
 			if (!KeepOrder) v = MergeValues(nx.Value, ny.Value);
 			nx.Value = v;
