@@ -39,7 +39,6 @@ namespace Oomph.Data.UF09Lib.UFs.v412
 		// (parent root, child root)
 		public event Action<TKey, TKey> United;
 
-		// キーの重複不可
 		public UnionFind(TValue v0, Func<TValue, TValue, TValue> mergeValues, bool keepOrder)
 		{
 			this.v0 = v0;
