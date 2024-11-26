@@ -1,46 +1,51 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
-// int vertexes, data augmentation
+// typed vertexes, data augmentation
+// 静的に頂点を登録する方式
 
 namespace Oomph.Data.UF09Lib.UFs.v411
 {
 	[System.Diagnostics.DebuggerDisplay(@"ItemsCount = {ItemsCount}, GroupsCount = {GroupsCount}")]
-	public class UnionFind<TValue>
+	public class UnionFind<TKey, TValue>
 	{
 		public class Node
 		{
-			public int Key { get; internal set; }
+			public TKey Key { get; internal set; }
 			internal Node Parent;
 			public int Size { get; internal set; } = 1;
 			public TValue Value { get; set; }
 			public override string ToString() => Parent == null ? $"{Key}, Size = {Size}, Value = {Value}" : $"{Key} (not root)";
 		}
 
-		readonly Node[] nodes;
-		public int ItemsCount => nodes.Length;
+		readonly Dictionary<TKey, Node> nodes = new Dictionary<TKey, Node>();
+		public int ItemsCount => nodes.Count;
 		public int GroupsCount { get; private set; }
 		public Func<TValue, TValue, TValue> MergeValues { get; }
 		public bool KeepOrder { get; }
 
 		// (parent root, child root)
-		public event Action<int, int> United;
+		public event Action<TKey, TKey> United;
 
-		public UnionFind(int n, Func<TValue, TValue, TValue> mergeValues, bool keepOrder, TValue[] values = null)
+		// キーの重複不可
+		public UnionFind(IEnumerable<(TKey, TValue)> collection, Func<TValue, TValue, TValue> mergeValues, bool keepOrder)
 		{
-			values ??= new TValue[n];
-			nodes = new Node[n];
-			for (int i = 0; i < n; ++i) nodes[i] = new Node { Key = i, Value = values[i] };
-			GroupsCount = n;
+			foreach (var (key, value) in collection)
+			{
+				if (nodes.ContainsKey(key)) throw new ArgumentException($"The key {key} is duplicated.", nameof(collection));
+				nodes[key] = new Node { Key = key, Value = value };
+			}
+			GroupsCount = nodes.Count;
 			MergeValues = mergeValues;
 			KeepOrder = keepOrder;
 		}
 
 		Node Find(Node n) => n.Parent == null ? n : n.Parent = Find(n.Parent);
-		public Node Find(int x) => Find(nodes[x]);
-		public bool AreSame(int x, int y) => Find(x) == Find(y);
+		public Node Find(TKey x) => Find(nodes[x]);
+		public bool AreSame(TKey x, TKey y) => Find(x) == Find(y);
 
-		public bool Union(int x, int y)
+		public bool Union(TKey x, TKey y)
 		{
 			var nx = Find(x);
 			var ny = Find(y);
@@ -62,7 +67,7 @@ namespace Oomph.Data.UF09Lib.UFs.v411
 		}
 
 		// 根とサイズと値の情報のみを取得します。
-		public Node[] GetGroupInfoes() => Array.FindAll(nodes, n => n.Parent == null);
-		public ILookup<Node, int> ToGroups() => nodes.ToLookup(Find, n => n.Key);
+		public IEnumerable<Node> GetGroupInfoes() => nodes.Values.Where(n => n.Parent == null);
+		public ILookup<Node, TKey> ToGroups() => nodes.Values.ToLookup(Find, n => n.Key);
 	}
 }
