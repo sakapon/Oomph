@@ -1,7 +1,7 @@
 # https://atcoder.jp/contests/abc327/tasks/abc327_d
 # bipartite matching, fake vertexes
 
-from ....uf_309_lib.ufs.int_omega.unionfind_301 import UnionFind
+from .....uf_309_lib.ufs.int_omega.unionfind_301 import UnionFind
 
 n, m = map(int, input().split())
 a = list(map(int, input().split()))

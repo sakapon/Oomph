@@ -1,6 +1,6 @@
 # https://atcoder.jp/contests/abc288/tasks/abc288_c
 
-from ....uf_309_lib.ufs.int_omega.unionfind_301 import UnionFind
+from .....uf_309_lib.ufs.int_omega.unionfind_301 import UnionFind
 
 n, m = map(int, input().split())
 
