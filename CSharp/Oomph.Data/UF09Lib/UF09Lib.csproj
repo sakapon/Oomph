@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
     <LangVersion>8.0</LangVersion>
-    <Version>1.0.3</Version>
+    <Version>1.0.4</Version>
     <AssemblyName>Oomph.Data.$(MSBuildProjectName)</AssemblyName>
     <RootNamespace>Oomph.Data.$(MSBuildProjectName.Replace(" ", "_"))</RootNamespace>
     <Title>Oomph.Data.$(MSBuildProjectName)</Title>
