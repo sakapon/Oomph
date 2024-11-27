@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Oomph.Data.UF09Lib.UFs.v321;
 
-// bipartite matching
+// bipartite graph
 namespace UF09Test.UFs.v321
 {
 	// Test: https://atcoder.jp/contests/abc327/tasks/abc327_d

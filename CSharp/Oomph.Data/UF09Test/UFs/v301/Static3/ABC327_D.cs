@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Oomph.Data.UF09Lib.UFs.v301;
 
-// bipartite matching, fake vertexes
+// bipartite graph, fake vertexes
 namespace UF09Test.UFs.v301.Static3
 {
 	// Test: https://atcoder.jp/contests/abc327/tasks/abc327_d
