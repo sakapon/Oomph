@@ -10,6 +10,6 @@ uf = UnionFind(n + 1)
 for j in range(m):
     a, b = map(int, input().split())
     if not uf.union(a, b):
-        r = r + 1
+        r += 1
 
 print(r)
