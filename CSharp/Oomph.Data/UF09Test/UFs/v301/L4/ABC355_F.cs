@@ -20,13 +20,14 @@ namespace UF09Test.UFs.v301.L4
 
 			const int k = 10;
 			var r = new List<int>();
+			var c = k * (n - 1);
 			var ufs = Array.ConvertAll(new bool[k], _ => new UnionFind(n + 1));
 
 			foreach (var (u, v, w) in es)
 			{
 				for (int j = w; j < k; j++)
 				{
-					ufs[j].Union(u, v);
+					if (ufs[j].Union(u, v)) c--;
 				}
 			}
 
@@ -34,10 +35,9 @@ namespace UF09Test.UFs.v301.L4
 			{
 				for (int j = w; j < k; j++)
 				{
-					ufs[j].Union(u, v);
+					if (ufs[j].Union(u, v)) c--;
 				}
-
-				r.Add(ufs.Sum(uf => uf.GroupsCount - 2));
+				r.Add(c);
 			}
 			return string.Join("\n", r);
 		}
