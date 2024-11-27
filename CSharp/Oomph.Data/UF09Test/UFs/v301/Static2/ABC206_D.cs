@@ -15,12 +15,13 @@ namespace UF09Test.UFs.v301.Static2
 			var n = int.Parse(Console.ReadLine());
 			var a = Read();
 
-			var uf = new UnionFind(200000 + 1);
+			const int max = 200000;
+			var uf = new UnionFind(max + 1);
 			for (int i = 0; i < n; i++)
 			{
 				uf.Union(a[i], a[n - 1 - i]);
 			}
-			return uf.GetGroupInfoes().Sum(g => g.Size - 1);
+			return max + 1 - uf.GroupsCount;
 		}
 	}
 }
