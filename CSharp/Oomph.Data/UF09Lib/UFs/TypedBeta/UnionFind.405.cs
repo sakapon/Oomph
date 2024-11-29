@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 
 // typed vertexes
-// 静的に頂点を登録する方式
+// 動的に頂点を登録する方式
+// 登録されていない頂点を呼び出した場合、KeyNotFoundException
 
 namespace Oomph.Data.UF09Lib.UFs.v405
 {
@@ -19,18 +20,28 @@ namespace Oomph.Data.UF09Lib.UFs.v405
 		}
 
 		readonly Dictionary<TKey, Node> nodes = new Dictionary<TKey, Node>();
+		// 登録されている頂点の数
 		public int ItemsCount => nodes.Count;
-		public int GroupsCount { get; private set; }
+		public int UnitedCount { get; private set; }
+		public int GroupsCount => nodes.Count - UnitedCount;
 
 		// (parent root, child root)
 		public event Action<TKey, TKey> United;
 
 		// キーの重複可
-		public UnionFind(IEnumerable<TKey> keys)
+		public UnionFind(IEnumerable<TKey> keys = null)
 		{
-			foreach (var key in keys)
-				if (!nodes.ContainsKey(key)) nodes[key] = new Node { Key = key };
-			GroupsCount = nodes.Count;
+			if (keys != null)
+				foreach (var key in keys)
+					if (!nodes.ContainsKey(key)) nodes[key] = new Node { Key = key };
+		}
+
+		public bool Contains(TKey x) => nodes.ContainsKey(x);
+		public bool Add(TKey x)
+		{
+			if (nodes.ContainsKey(x)) return false;
+			nodes[x] = new Node { Key = x };
+			return true;
 		}
 
 		Node Find(Node n) => n.Parent == null ? n : n.Parent = Find(n.Parent);
@@ -46,7 +57,7 @@ namespace Oomph.Data.UF09Lib.UFs.v405
 			if (nx.Size < ny.Size) (nx, ny) = (ny, nx);
 			ny.Parent = nx;
 			nx.Size += ny.Size;
-			--GroupsCount;
+			++UnitedCount;
 			United?.Invoke(nx.Key, ny.Key);
 			return true;
 		}
