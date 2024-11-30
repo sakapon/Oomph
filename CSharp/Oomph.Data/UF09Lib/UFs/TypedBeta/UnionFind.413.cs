@@ -4,7 +4,6 @@ using System.Linq;
 
 // typed vertexes, data augmentation
 // 動的に頂点を登録する方式
-// 登録されていない頂点を呼び出した場合、KeyNotFoundException
 
 namespace Oomph.Data.UF09Lib.UFs.v413
 {
@@ -28,18 +27,16 @@ namespace Oomph.Data.UF09Lib.UFs.v413
 
 		public Func<TValue, TValue, TValue> MergeValues { get; }
 		public bool KeepOrder { get; }
+		readonly Func<TKey, TValue> createValue;
 
 		// (parent root, child root)
 		public event Action<TKey, TKey> United;
 
-		// キーの重複可
-		public UnionFind(Func<TValue, TValue, TValue> mergeValues, bool keepOrder, IEnumerable<(TKey, TValue)> collection = null)
+		public UnionFind(Func<TValue, TValue, TValue> mergeValues, bool keepOrder, Func<TKey, TValue> createValue)
 		{
-			if (collection != null)
-				foreach (var (key, value) in collection)
-					if (!nodes.ContainsKey(key)) nodes[key] = new Node { Key = key, Value = value };
 			MergeValues = mergeValues;
 			KeepOrder = keepOrder;
+			this.createValue = createValue;
 		}
 
 		public bool Contains(TKey x) => nodes.ContainsKey(x);
@@ -49,15 +46,30 @@ namespace Oomph.Data.UF09Lib.UFs.v413
 			nodes[key] = new Node { Key = key, Value = value };
 			return true;
 		}
+		Node CreateNode(TKey key)
+		{
+			var n = new Node { Key = key, Value = createValue(key) };
+			nodes[key] = n;
+			return n;
+		}
 
 		Node Find(Node n) => n.Parent == null ? n : n.Parent = Find(n.Parent);
-		public Node Find(TKey x) => Find(nodes[x]);
-		public bool AreSame(TKey x, TKey y) => Find(x) == Find(y);
+		public Node Find(TKey x) => nodes.TryGetValue(x, out var n) ? Find(n) : null;
 
-		public bool Union(TKey x, TKey y)
+		public bool AreSame(TKey x, TKey y)
 		{
+			if (nodes.Comparer.Equals(x, y)) return true;
 			var nx = Find(x);
 			var ny = Find(y);
+			return nx != null && nx == ny;
+		}
+
+		// 合併するときのみ、暗黙的にノードを作成します。
+		public bool Union(TKey x, TKey y)
+		{
+			if (nodes.Comparer.Equals(x, y)) return false;
+			var nx = Find(x) ?? CreateNode(x);
+			var ny = Find(y) ?? CreateNode(y);
 			if (nx == ny) return false;
 
 			TValue v = default;
