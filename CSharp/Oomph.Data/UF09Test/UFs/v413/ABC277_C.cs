@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Oomph.Data.UF09Lib.UFs.v414;
+using Oomph.Data.UF09Lib.UFs.v413;
 
-namespace UF09Test.UFs.v414
+namespace UF09Test.UFs.v413
 {
 	// Test: https://atcoder.jp/contests/abc277/tasks/abc277_c
 	class ABC277_C
@@ -16,15 +16,12 @@ namespace UF09Test.UFs.v414
 			var n = int.Parse(Console.ReadLine());
 			var es = Array.ConvertAll(new bool[n], _ => Read2());
 
-			var uf = new UnionFind<int, int>(Math.Max, false);
-			uf.Add(1, 1);
+			var uf = new UnionFind<int, int>(Math.Max, false, v => v);
 			foreach (var (a, b) in es)
 			{
-				uf.Add(a, a);
-				uf.Add(b, b);
 				uf.Union(a, b);
 			}
-			return uf.Find(1).Value;
+			return uf.Find(1)?.Value ?? 1;
 		}
 	}
 }
