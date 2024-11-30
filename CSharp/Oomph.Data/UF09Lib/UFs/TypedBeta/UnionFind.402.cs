@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace Oomph.Data.UF09Lib.UFs.v402
 {
-	[System.Diagnostics.DebuggerDisplay(@"ItemsCount = {ItemsCount}, UnitedCount = {UnitedCount}")]
+	[System.Diagnostics.DebuggerDisplay(@"ItemsCount = {ItemsCount}, GroupsCount = {GroupsCount}")]
 	public class UnionFind<TKey>
 	{
 		public class Node
@@ -30,6 +30,7 @@ namespace Oomph.Data.UF09Lib.UFs.v402
 		// 登録されている頂点の数
 		public int ItemsCount => nodes.Count;
 		public int UnitedCount { get; private set; }
+		public int GroupsCount => nodes.Count - UnitedCount;
 
 		// (parent root, child root)
 		public event Action<TKey, TKey> United;

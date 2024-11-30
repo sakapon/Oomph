@@ -22,6 +22,7 @@ namespace Oomph.Data.UF09Lib.UFs.v411
 		readonly Dictionary<TKey, Node> nodes = new Dictionary<TKey, Node>();
 		public int ItemsCount => nodes.Count;
 		public int GroupsCount { get; private set; }
+
 		public Func<TValue, TValue, TValue> MergeValues { get; }
 		public bool KeepOrder { get; }
 

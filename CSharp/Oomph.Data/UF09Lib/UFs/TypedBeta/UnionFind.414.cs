@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace Oomph.Data.UF09Lib.UFs.v414
 {
-	[System.Diagnostics.DebuggerDisplay(@"ItemsCount = {ItemsCount}, UnitedCount = {UnitedCount}")]
+	[System.Diagnostics.DebuggerDisplay(@"ItemsCount = {ItemsCount}, GroupsCount = {GroupsCount}")]
 	public class UnionFind<TKey, TValue>
 	{
 		public class Node
@@ -23,6 +23,8 @@ namespace Oomph.Data.UF09Lib.UFs.v414
 		// 登録されている頂点の数
 		public int ItemsCount => nodes.Count;
 		public int UnitedCount { get; private set; }
+		public int GroupsCount => nodes.Count - UnitedCount;
+
 		public Func<TValue, TValue, TValue> MergeValues { get; }
 		public bool KeepOrder { get; }
 
