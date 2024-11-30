@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 
 // typed vertexes, data augmentation
-// 静的に頂点を登録する方式
+// 動的に頂点を登録する方式
+// 登録されていない頂点を呼び出した場合、KeyNotFoundException
 
 namespace Oomph.Data.UF09Lib.UFs.v415
 {
@@ -20,8 +21,10 @@ namespace Oomph.Data.UF09Lib.UFs.v415
 		}
 
 		readonly Dictionary<TKey, Node> nodes = new Dictionary<TKey, Node>();
+		// 登録されている頂点の数
 		public int ItemsCount => nodes.Count;
-		public int GroupsCount { get; private set; }
+		public int UnitedCount { get; private set; }
+		public int GroupsCount => nodes.Count - UnitedCount;
 
 		public Func<TValue, TValue, TValue> MergeValues { get; }
 		public bool KeepOrder { get; }
@@ -29,17 +32,22 @@ namespace Oomph.Data.UF09Lib.UFs.v415
 		// (parent root, child root)
 		public event Action<TKey, TKey> United;
 
-		// キーの重複不可
-		public UnionFind(IEnumerable<(TKey, TValue)> collection, Func<TValue, TValue, TValue> mergeValues, bool keepOrder)
+		// キーの重複可
+		public UnionFind(Func<TValue, TValue, TValue> mergeValues, bool keepOrder, IEnumerable<(TKey, TValue)> collection = null)
 		{
-			foreach (var (key, value) in collection)
-			{
-				if (nodes.ContainsKey(key)) throw new ArgumentException($"The key {key} is duplicated.", nameof(collection));
-				nodes[key] = new Node { Key = key, Value = value };
-			}
-			GroupsCount = nodes.Count;
+			if (collection != null)
+				foreach (var (key, value) in collection)
+					if (!nodes.ContainsKey(key)) nodes[key] = new Node { Key = key, Value = value };
 			MergeValues = mergeValues;
 			KeepOrder = keepOrder;
+		}
+
+		public bool Contains(TKey x) => nodes.ContainsKey(x);
+		public bool Add(TKey key, TValue value)
+		{
+			if (nodes.ContainsKey(key)) return false;
+			nodes[key] = new Node { Key = key, Value = value };
+			return true;
 		}
 
 		Node Find(Node n) => n.Parent == null ? n : n.Parent = Find(n.Parent);
@@ -59,7 +67,7 @@ namespace Oomph.Data.UF09Lib.UFs.v415
 			if (nx.Size < ny.Size) (nx, ny) = (ny, nx);
 			ny.Parent = nx;
 			nx.Size += ny.Size;
-			--GroupsCount;
+			++UnitedCount;
 			// 親子の順序で値をマージします。
 			if (!KeepOrder) v = MergeValues(nx.Value, ny.Value);
 			nx.Value = v;

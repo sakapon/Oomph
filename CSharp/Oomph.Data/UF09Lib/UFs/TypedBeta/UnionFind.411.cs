@@ -30,7 +30,7 @@ namespace Oomph.Data.UF09Lib.UFs.v411
 		public event Action<TKey, TKey> United;
 
 		// キーの重複不可
-		public UnionFind(IEnumerable<(TKey, TValue)> collection, Func<TValue, TValue, TValue> mergeValues, bool keepOrder)
+		public UnionFind(Func<TValue, TValue, TValue> mergeValues, bool keepOrder, IEnumerable<(TKey, TValue)> collection)
 		{
 			foreach (var (key, value) in collection)
 			{
