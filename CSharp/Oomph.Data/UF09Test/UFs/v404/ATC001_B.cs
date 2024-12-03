@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Oomph.Data.UF09Lib.UFs.v404;
 
-namespace UF09Test.UFs.v403
+namespace UF09Test.UFs.v404
 {
 	// Test: https://atcoder.jp/contests/atc001/tasks/unionfind_a
 	// Test: https://atcoder.jp/contests/practice2/tasks/practice2_a
