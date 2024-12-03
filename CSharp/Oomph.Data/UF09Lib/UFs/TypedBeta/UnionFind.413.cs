@@ -24,7 +24,7 @@ namespace Oomph.Data.UF09Lib.UFs.v413
 		Node GetNode(TKey key)
 		{
 			if (!nodes.TryGetValue(key, out var n))
-				nodes[key] = n = new Node { Key = key, Value = createValue(key) };
+				nodes[key] = n = new Node { Key = key, Value = CreateValue(key) };
 			return n;
 		}
 
@@ -35,7 +35,7 @@ namespace Oomph.Data.UF09Lib.UFs.v413
 
 		public Func<TValue, TValue, TValue> MergeValues { get; }
 		public bool KeepOrder { get; }
-		readonly Func<TKey, TValue> createValue;
+		public Func<TKey, TValue> CreateValue { get; }
 
 		// (parent root, child root)
 		public event Action<TKey, TKey> United;
@@ -44,7 +44,7 @@ namespace Oomph.Data.UF09Lib.UFs.v413
 		{
 			MergeValues = mergeValues;
 			KeepOrder = keepOrder;
-			this.createValue = createValue;
+			CreateValue = createValue;
 		}
 
 		public bool Contains(TKey x) => nodes.ContainsKey(x);
