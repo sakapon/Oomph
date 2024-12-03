@@ -5,7 +5,7 @@ using System.Linq;
 // typed vertexes, data augmentation
 // 動的に頂点を登録する方式
 
-namespace Oomph.Data.UF09Lib.UFs.v414
+namespace Oomph.Data.UF09Lib.UFs.v418
 {
 	[System.Diagnostics.DebuggerDisplay(@"ItemsCount = {ItemsCount}, GroupsCount = {GroupsCount}")]
 	public class UnionFind<TKey, TValue>
