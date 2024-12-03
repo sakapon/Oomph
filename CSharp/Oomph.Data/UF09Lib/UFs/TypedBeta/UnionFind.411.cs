@@ -4,6 +4,7 @@ using System.Linq;
 
 // typed vertexes, data augmentation
 // 静的に頂点を登録する方式
+// 登録されていない頂点を呼び出した場合、KeyNotFoundException
 
 namespace Oomph.Data.UF09Lib.UFs.v411
 {
@@ -29,14 +30,12 @@ namespace Oomph.Data.UF09Lib.UFs.v411
 		// (parent root, child root)
 		public event Action<TKey, TKey> United;
 
-		// キーの重複不可
+		// キーの重複可
 		public UnionFind(Func<TValue, TValue, TValue> mergeValues, bool keepOrder, IEnumerable<(TKey, TValue)> collection)
 		{
-			foreach (var (key, value) in collection)
-			{
-				if (nodes.ContainsKey(key)) throw new ArgumentException($"The key {key} is duplicated.", nameof(collection));
-				nodes[key] = new Node { Key = key, Value = value };
-			}
+			if (collection != null)
+				foreach (var (key, value) in collection)
+					if (!nodes.ContainsKey(key)) nodes[key] = new Node { Key = key, Value = value };
 			GroupsCount = nodes.Count;
 			MergeValues = mergeValues;
 			KeepOrder = keepOrder;

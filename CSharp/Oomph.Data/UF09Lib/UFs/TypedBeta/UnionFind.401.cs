@@ -4,6 +4,7 @@ using System.Linq;
 
 // typed vertexes
 // 静的に頂点を登録する方式
+// 登録されていない頂点を呼び出した場合、KeyNotFoundException
 
 namespace Oomph.Data.UF09Lib.UFs.v401
 {
@@ -28,8 +29,9 @@ namespace Oomph.Data.UF09Lib.UFs.v401
 		// キーの重複可
 		public UnionFind(IEnumerable<TKey> keys)
 		{
-			foreach (var key in keys)
-				if (!nodes.ContainsKey(key)) nodes[key] = new Node { Key = key };
+			if (keys != null)
+				foreach (var x in keys)
+					if (!nodes.ContainsKey(x)) nodes[x] = new Node { Key = x };
 			GroupsCount = nodes.Count;
 		}
 

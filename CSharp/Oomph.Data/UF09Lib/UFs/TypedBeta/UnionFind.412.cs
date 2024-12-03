@@ -32,12 +32,8 @@ namespace Oomph.Data.UF09Lib.UFs.v412
 		// (parent root, child root)
 		public event Action<TKey, TKey> United;
 
-		// キーの重複可
-		public UnionFind(Func<TValue, TValue, TValue> mergeValues, bool keepOrder, IEnumerable<(TKey, TValue)> collection = null)
+		public UnionFind(Func<TValue, TValue, TValue> mergeValues, bool keepOrder)
 		{
-			if (collection != null)
-				foreach (var (key, value) in collection)
-					if (!nodes.ContainsKey(key)) nodes[key] = new Node { Key = key, Value = value };
 			MergeValues = mergeValues;
 			KeepOrder = keepOrder;
 		}

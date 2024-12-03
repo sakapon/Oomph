@@ -28,14 +28,6 @@ namespace Oomph.Data.UF09Lib.UFs.v402
 		// (parent root, child root)
 		public event Action<TKey, TKey> United;
 
-		// キーの重複可
-		public UnionFind(IEnumerable<TKey> keys = null)
-		{
-			if (keys != null)
-				foreach (var key in keys)
-					if (!nodes.ContainsKey(key)) nodes[key] = new Node { Key = key };
-		}
-
 		public bool Contains(TKey x) => nodes.ContainsKey(x);
 		public bool Add(TKey x)
 		{
