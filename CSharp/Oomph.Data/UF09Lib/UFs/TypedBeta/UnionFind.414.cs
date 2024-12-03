@@ -46,6 +46,8 @@ namespace Oomph.Data.UF09Lib.UFs.v414
 			nodes[key] = new Node { Key = key, Value = value };
 			return true;
 		}
+
+		// 合併するときのみ、暗黙的にノードを作成します。
 		Node CreateNode(TKey key)
 		{
 			var n = new Node { Key = key, Value = CreateValue(key) };
@@ -64,7 +66,6 @@ namespace Oomph.Data.UF09Lib.UFs.v414
 			return nx != null && nx == ny;
 		}
 
-		// 合併するときのみ、暗黙的にノードを作成します。
 		public bool Union(TKey x, TKey y)
 		{
 			if (nodes.Comparer.Equals(x, y)) return false;

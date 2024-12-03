@@ -19,15 +19,7 @@ namespace Oomph.Data.UF09Lib.UFs.v413
 			public override string ToString() => Parent == null ? $"{Key}, Size = {Size}, Value = {Value}" : $"{Key} (not root)";
 		}
 
-		// 問合せ時に、暗黙的にノードを作成します。
 		readonly Dictionary<TKey, Node> nodes = new Dictionary<TKey, Node>();
-		Node GetNode(TKey key)
-		{
-			if (!nodes.TryGetValue(key, out var n))
-				nodes[key] = n = new Node { Key = key, Value = CreateValue(key) };
-			return n;
-		}
-
 		// 登録されている頂点の数
 		public int ItemsCount => nodes.Count;
 		public int UnitedCount { get; private set; }
@@ -53,6 +45,14 @@ namespace Oomph.Data.UF09Lib.UFs.v413
 			if (nodes.ContainsKey(key)) return false;
 			nodes[key] = new Node { Key = key, Value = value };
 			return true;
+		}
+
+		// 問合せ時に、暗黙的にノードを作成します。
+		Node GetNode(TKey key)
+		{
+			if (!nodes.TryGetValue(key, out var n))
+				nodes[key] = n = new Node { Key = key, Value = CreateValue(key) };
+			return n;
 		}
 
 		Node Find(Node n) => n.Parent == null ? n : n.Parent = Find(n.Parent);
