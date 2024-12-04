@@ -8,7 +8,6 @@ namespace UF09Test.UFs.v311
 	// Test: https://atcoder.jp/contests/abc228/tasks/abc228_d
 	class ABC228_D
 	{
-		static int[] Read() => Array.ConvertAll(Console.ReadLine().Split(), int.Parse);
 		static long[] ReadL() => Array.ConvertAll(Console.ReadLine().Split(), long.Parse);
 		static (long, long) Read2L() { var a = ReadL(); return (a[0], a[1]); }
 		static void Main() => Console.WriteLine(Solve());
