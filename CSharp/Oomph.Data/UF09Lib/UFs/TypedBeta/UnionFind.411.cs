@@ -34,8 +34,8 @@ namespace Oomph.Data.UF09Lib.UFs.v411
 		public UnionFind(Func<TValue, TValue, TValue> mergeValues, bool keepOrder, IEnumerable<(TKey, TValue)> collection)
 		{
 			if (collection != null)
-				foreach (var (key, value) in collection)
-					if (!nodes.ContainsKey(key)) nodes[key] = new Node { Key = key, Value = value };
+				foreach (var (x, value) in collection)
+					if (!nodes.ContainsKey(x)) nodes[x] = new Node { Key = x, Value = value };
 			GroupsCount = nodes.Count;
 			MergeValues = mergeValues;
 			KeepOrder = keepOrder;

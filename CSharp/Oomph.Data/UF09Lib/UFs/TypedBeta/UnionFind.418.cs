@@ -39,10 +39,10 @@ namespace Oomph.Data.UF09Lib.UFs.v418
 
 		// 明示的にノードを作成します。
 		public bool Contains(TKey x) => nodes.ContainsKey(x);
-		public bool Add(TKey key, TValue value)
+		public bool Add(TKey x, TValue value)
 		{
-			if (nodes.ContainsKey(key)) return false;
-			nodes[key] = new Node { Key = key, Value = value };
+			if (nodes.ContainsKey(x)) return false;
+			nodes[x] = new Node { Key = x, Value = value };
 			return true;
 		}
 

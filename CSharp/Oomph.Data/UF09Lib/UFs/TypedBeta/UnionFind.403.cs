@@ -36,10 +36,10 @@ namespace Oomph.Data.UF09Lib.UFs.v403
 		}
 
 		// 問合せ時に、暗黙的にノードを作成します。
-		Node GetNode(TKey key)
+		Node GetNode(TKey x)
 		{
-			if (!nodes.TryGetValue(key, out var n))
-				nodes[key] = n = new Node { Key = key };
+			if (!nodes.TryGetValue(x, out var n))
+				nodes[x] = n = new Node { Key = x };
 			return n;
 		}
 

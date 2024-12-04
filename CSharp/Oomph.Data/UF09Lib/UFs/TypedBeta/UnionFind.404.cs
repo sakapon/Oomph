@@ -36,10 +36,10 @@ namespace Oomph.Data.UF09Lib.UFs.v404
 		}
 
 		// 合併するときのみ、暗黙的にノードを作成します。
-		Node CreateNode(TKey key)
+		Node CreateNode(TKey x)
 		{
-			var n = new Node { Key = key };
-			nodes[key] = n;
+			var n = new Node { Key = x };
+			nodes[x] = n;
 			return n;
 		}
 

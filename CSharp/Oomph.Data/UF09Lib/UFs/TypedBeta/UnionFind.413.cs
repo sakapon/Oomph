@@ -40,18 +40,18 @@ namespace Oomph.Data.UF09Lib.UFs.v413
 		}
 
 		public bool Contains(TKey x) => nodes.ContainsKey(x);
-		public bool Add(TKey key, TValue value)
+		public bool Add(TKey x, TValue value)
 		{
-			if (nodes.ContainsKey(key)) return false;
-			nodes[key] = new Node { Key = key, Value = value };
+			if (nodes.ContainsKey(x)) return false;
+			nodes[x] = new Node { Key = x, Value = value };
 			return true;
 		}
 
 		// 問合せ時に、暗黙的にノードを作成します。
-		Node GetNode(TKey key)
+		Node GetNode(TKey x)
 		{
-			if (!nodes.TryGetValue(key, out var n))
-				nodes[key] = n = new Node { Key = key, Value = CreateValue(key) };
+			if (!nodes.TryGetValue(x, out var n))
+				nodes[x] = n = new Node { Key = x, Value = CreateValue(x) };
 			return n;
 		}
 
