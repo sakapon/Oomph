@@ -3,7 +3,7 @@ using System.Linq;
 
 // int vertexes, node-based, from 103
 
-namespace Oomph.Data.UF09Lib.UFs.v211
+namespace Oomph.Data.UF09Lib.UFs.v201
 {
 	[System.Diagnostics.DebuggerDisplay(@"ItemsCount = {ItemsCount}, GroupsCount = {GroupsCount}")]
 	public class UnionFind
