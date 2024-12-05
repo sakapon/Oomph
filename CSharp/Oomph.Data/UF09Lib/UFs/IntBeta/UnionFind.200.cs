@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 
 // int vertexes, array-based, from 103
 
@@ -35,7 +34,5 @@ namespace Oomph.Data.UF09Lib.UFs.v200
 			--GroupsCount;
 			return true;
 		}
-
-		public ILookup<int, int> ToGroups() => Enumerable.Range(0, parents.Length).ToLookup(Find);
 	}
 }
