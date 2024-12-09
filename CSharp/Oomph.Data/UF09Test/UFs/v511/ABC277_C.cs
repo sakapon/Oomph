@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Oomph.Data.UF09Lib.UFs.v414;
+using Oomph.Data.UF09Lib.UFs.v511;
 
 namespace UF09Test.UFs.v511
 {
@@ -21,7 +21,7 @@ namespace UF09Test.UFs.v511
 			{
 				uf.Union(a, b);
 			}
-			return uf.Find(1)?.Value ?? 1;
+			return uf.Find(1).Value;
 		}
 	}
 }
