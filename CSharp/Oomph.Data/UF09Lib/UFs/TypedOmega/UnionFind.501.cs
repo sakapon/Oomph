@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 
-// typed vertexes
+// typed vertexes (403)
 // 動的に頂点を登録する方式
 
-namespace Oomph.Data.UF09Lib.UFs.v403
+namespace Oomph.Data.UF09Lib.UFs.v501
 {
 	[System.Diagnostics.DebuggerDisplay(@"ItemsCount = {ItemsCount}, GroupsCount = {GroupsCount}")]
 	public class UnionFind<TKey>
