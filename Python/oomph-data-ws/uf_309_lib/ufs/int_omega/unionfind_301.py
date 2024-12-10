@@ -1,7 +1,6 @@
 class UnionFind:
 
     class Node:
-
         def __init__(self, key: int):
             self.key = key
             self.parent = None
@@ -37,7 +36,7 @@ class UnionFind:
             gx, gy = gy, gx
         gy.parent = gx
         gx.size += gy.size
-        self.groups_count = self.groups_count - 1
+        self.groups_count -= 1
         return True
 
     def get_group_infoes(self):
