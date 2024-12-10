@@ -24,3 +24,25 @@ Union-Find Trees.
 - 302: undo
 - 311: data augmentation
 - 321: data augmentation (relative)
+
+#### Typed Beta
+- 401: normal
+  - static vertexes, KeyNotFoundException
+- 402: normal
+  - dynamic vertexes, KeyNotFoundException
+- 403: normal
+  - dynamic vertexes, implicit nodes
+- 404: normal
+  - dynamic vertexes, implicit nodes (Union only)
+- 411: data augmentation
+  - static vertexes, KeyNotFoundException
+- 412: data augmentation
+  - dynamic vertexes, KeyNotFoundException
+- 413: data augmentation
+  - dynamic vertexes, implicit nodes
+- 414: data augmentation
+  - dynamic vertexes, implicit nodes (Union only)
+
+#### Typed Omega
+- 501: 403
+- 511: 413
