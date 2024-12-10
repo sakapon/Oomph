@@ -14,10 +14,10 @@ Union-Find Trees.
 - 123: 103 + parents with sizes
 
 #### Int Beta
-- 201: array-based
-- 211: node-based
+- 200: array-based
+- 201: node-based
 - 221: data augmentation (relative, long)
-- 261: short code, path compression
+- 251: short code, path compression
 
 #### Int Omega
 - 301: normal

@@ -1,6 +1,6 @@
 ﻿using System;
 
-// short, path compression, from 101
+// short code, path compression, from 101
 // O(log n)
 
 namespace Oomph.Data.UF09Lib.UFs.v251
