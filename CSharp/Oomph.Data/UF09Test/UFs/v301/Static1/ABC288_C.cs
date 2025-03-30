@@ -6,6 +6,7 @@ using Oomph.Data.UF09Lib.UFs.v301;
 namespace UF09Test.UFs.v301.Static1
 {
 	// Test: https://atcoder.jp/contests/abc288/tasks/abc288_c
+	// Test: https://atcoder.jp/contests/abc399/tasks/abc399_c
 	class ABC288_C
 	{
 		static int[] Read() => Array.ConvertAll(Console.ReadLine().Split(), int.Parse);
