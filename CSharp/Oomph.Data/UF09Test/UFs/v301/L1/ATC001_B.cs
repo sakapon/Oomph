@@ -7,6 +7,7 @@ namespace UF09Test.UFs.v301.L1
 {
 	// Test: https://atcoder.jp/contests/atc001/tasks/unionfind_a
 	// Test: https://atcoder.jp/contests/practice2/tasks/practice2_a
+	// Test: https://atcoder.jp/contests/tessoku-book/tasks/tessoku_book_bn
 	class ATC001_B
 	{
 		static int[] Read() => Array.ConvertAll(Console.ReadLine().Split(), int.Parse);
