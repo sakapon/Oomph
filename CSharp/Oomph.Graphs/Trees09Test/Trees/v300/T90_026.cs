@@ -20,9 +20,9 @@ namespace Trees09Test.Trees.v300
 			var tree = new Tree(n + 1, map, 1);
 
 			var rn = Enumerable.Range(1, n).ToArray();
-			var r0 = Array.FindAll(rn, v => tree.Depths[v] % 2 == 0);
-			var r1 = Array.FindAll(rn, v => tree.Depths[v] % 2 == 1);
-			var r = r0.Length >= r1.Length ? r0 : r1;
+			var r = Array.FindAll(rn, v => tree.Depths[v] % 2 == 0);
+			if (r.Length < n / 2)
+				r = Array.FindAll(rn, v => tree.Depths[v] % 2 == 1);
 			return string.Join(" ", r[..(n / 2)]);
 		}
 

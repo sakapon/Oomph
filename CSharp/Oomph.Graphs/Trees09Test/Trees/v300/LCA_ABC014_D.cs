@@ -23,21 +23,25 @@ namespace Trees09Test.Trees.v300
 			return string.Join("\n", qs.Select(q =>
 			{
 				var (a, b) = q;
-				if (tree.TourMap[b][0] < tree.TourMap[a][0]) (a, b) = (b, a);
-				if (tree.TourMap[b][^1] <= tree.TourMap[a][^1]) return tree.Depths[b] - tree.Depths[a] + 1;
-
-				var (so, eo) = (tree.TourMap[a][^1], tree.TourMap[b][0]);
-
-				var d = First(0, Math.Min(tree.Depths[a], tree.Depths[b]), dx =>
-				{
-					var l = tree.DepthToTourMap[dx];
-					var si = First(0, l.Count, x => l[x] >= so);
-					var ei = First(0, l.Count, x => l[x] > eo);
-					return si < ei;
-				});
-
+				var d = GetLcaDepth(tree, a, b);
 				return tree.Depths[a] + tree.Depths[b] - 2 * d + 1;
 			}));
+		}
+
+		static int GetLcaDepth(Tree tree, int a, int b)
+		{
+			if (tree.TourMap[b][0] < tree.TourMap[a][0]) (a, b) = (b, a);
+			if (tree.TourMap[b][^1] <= tree.TourMap[a][^1]) return tree.Depths[a];
+
+			var (so, eo) = (tree.TourMap[a][^1], tree.TourMap[b][0]);
+
+			return First(0, Math.Min(tree.Depths[a], tree.Depths[b]), dx =>
+			{
+				var l = tree.DepthToTourMap[dx];
+				var si = First(0, l.Count, x => l[x] >= so);
+				var ei = First(0, l.Count, x => l[x] > eo);
+				return si < ei;
+			});
 		}
 
 		static int First(int l, int r, Func<int, bool> f)
