@@ -16,8 +16,8 @@ namespace Trees09Test.Trees.v300
 			var n = int.Parse(Console.ReadLine());
 			var es = Array.ConvertAll(new bool[n - 1], _ => Read2());
 
-			var map = ToMapList(n + 1, es, true);
-			var tree = new Tree(n + 1, 1, map);
+			var map = ToListMap(n + 1, es, true);
+			var tree = new Tree(n + 1, map, 1);
 
 			var rn = Enumerable.Range(1, n).ToArray();
 			var r0 = Array.FindAll(rn, v => tree.Depths[v] % 2 == 0);
@@ -26,7 +26,7 @@ namespace Trees09Test.Trees.v300
 			return string.Join(" ", r[..(n / 2)]);
 		}
 
-		public static List<int>[] ToMapList(int n, (int u, int v)[] es, bool twoway)
+		public static List<int>[] ToListMap(int n, (int u, int v)[] es, bool twoway)
 		{
 			var map = Array.ConvertAll(new bool[n], _ => new List<int>());
 			foreach (var (u, v) in es)

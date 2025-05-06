@@ -8,16 +8,16 @@ namespace Oomph.Graphs.Trees09Lib.Trees.v100
 	public class Tree
 	{
 		public int Count { get; }
-		public int Root { get; }
 		public List<int>[] Map { get; }
+		public int Root { get; }
 		public int[] Parents { get; }
 		public int[] Depths { get; }
 
-		public Tree(int n, int root, List<int>[] map)
+		public Tree(int n, List<int>[] map, int root)
 		{
 			Count = n;
-			Root = root;
 			Map = map;
+			Root = root;
 			Parents = Array.ConvertAll(Map, _ => -1);
 			Depths = Array.ConvertAll(Map, _ => -1);
 
