@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Oomph.Graphs.Trees09Lib.Trees.v200;
+using Oomph.Graphs.Trees10Lib.Trees.v200;
 
-namespace Trees09Test.Trees.v300
+namespace Trees10Test.Trees.v300
 {
 	// Test: https://atcoder.jp/contests/abc014/tasks/abc014_4
 	class LCA_ABC014_D

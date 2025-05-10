@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Oomph.Graphs.Trees09Lib.Trees.v101;
+using Oomph.Graphs.Trees10Lib.Trees.v101;
 
-namespace Trees09Test.Trees.v300
+namespace Trees10Test.Trees.v300
 {
 	// Test: https://atcoder.jp/contests/typical90/tasks/typical90_c
 	class T90_003

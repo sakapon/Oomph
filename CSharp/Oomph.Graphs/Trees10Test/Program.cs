@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Trees09Test
+namespace Trees10Test
 {
 	internal class Program
 	{

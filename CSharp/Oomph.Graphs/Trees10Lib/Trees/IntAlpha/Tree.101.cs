@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 // int vertexes, node-based
 
-namespace Oomph.Graphs.Trees09Lib.Trees.v101
+namespace Oomph.Graphs.Trees10Lib.Trees.v101
 {
 	public class Tree
 	{

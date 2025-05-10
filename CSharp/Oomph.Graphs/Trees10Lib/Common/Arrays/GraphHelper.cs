@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Oomph.Graphs.Trees09Lib.Common.Arrays
+namespace Oomph.Graphs.Trees10Lib.Common.Arrays
 {
 	public static class UnweightedGraphHelper
 	{
