@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <LangVersion>10.0</LangVersion>
+    <ImplicitUsings>enable</ImplicitUsings>
     <Version>1.0.0</Version>
     <AssemblyName>Oomph.Graphs.$(MSBuildProjectName)</AssemblyName>
     <RootNamespace>Oomph.Graphs.$(MSBuildProjectName.Replace(" ", "_"))</RootNamespace>
