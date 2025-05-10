@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.12.35527.113 d17.12
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trees09Lib", "Trees09Lib\Trees09Lib.csproj", "{A2335D01-86A7-4618-8D47-341317585D97}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trees10Lib", "Trees10Lib\Trees10Lib.csproj", "{A2335D01-86A7-4618-8D47-341317585D97}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trees09Test", "Trees09Test\Trees09Test.csproj", "{A86F0E7A-8327-411A-B5FE-E13E583BFBB2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trees10Test", "Trees10Test\Trees10Test.csproj", "{A86F0E7A-8327-411A-B5FE-E13E583BFBB2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Trees09Lib\Trees09Lib.csproj" />
+    <ProjectReference Include="..\Trees10Lib\Trees10Lib.csproj" />
   </ItemGroup>
 
 </Project>
