@@ -38,5 +38,10 @@ namespace Oomph.Graphs.Trees10Lib.Trees.v210
 				DFS(nv);
 			}
 		}
+
+		public IEnumerable<int> GetPath(int v)
+		{
+			for (; v != -1; v = Parents[v]) yield return v;
+		}
 	}
 }
