@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-// int vertexes, array-based
+﻿// int vertexes, array-based
 
 namespace Oomph.Graphs.Trees10Lib.Trees.v200
 {

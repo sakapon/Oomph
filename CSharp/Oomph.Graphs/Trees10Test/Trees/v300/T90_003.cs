@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Oomph.Graphs.Trees10Lib.Trees.v101;
+﻿using Oomph.Graphs.Trees10Lib.Trees.v101;
 
 namespace Trees10Test.Trees.v300
 {
