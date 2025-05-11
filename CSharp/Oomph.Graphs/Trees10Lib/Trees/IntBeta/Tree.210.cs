@@ -28,7 +28,7 @@ namespace Oomph.Graphs.Trees10Lib.Trees.v210
 			Reroot(root);
 		}
 
-		void Reroot(int root)
+		public void Reroot(int root)
 		{
 			var tour = new List<int>();
 			TourMap = Array.ConvertAll(Map, _ => new List<int>());
@@ -66,25 +66,28 @@ namespace Oomph.Graphs.Trees10Lib.Trees.v210
 			for (; v != -1; v = Parents[v]) yield return v;
 		}
 
-		public bool IsAncestor(int a, int b)
+		public bool IsAncestor(int a, int v)
 		{
-			return TourMap[a][0] <= TourMap[b][0] && TourMap[b][^1] <= TourMap[a][^1];
+			return TourMap[a][0] <= TourMap[v][0] && TourMap[v][^1] <= TourMap[a][^1];
 		}
 
-		public int GetLcaDepth(int a, int b)
+		public int GetLca(int a, int b)
 		{
-			if (TourMap[b][0] < TourMap[a][0]) (a, b) = (b, a);
-			if (TourMap[b][^1] <= TourMap[a][^1]) return Depths[a];
+			if (TourMap[a][0] > TourMap[b][0]) (a, b) = (b, a);
+			if (TourMap[b][^1] <= TourMap[a][^1]) return a;
 
 			var (so, eo) = (TourMap[a][^1], TourMap[b][0]);
+			var tourId = -1;
 
-			return First(0, Math.Min(Depths[a], Depths[b]), dx =>
+			var depth = First(0, Math.Min(Depths[a], Depths[b]), dx =>
 			{
 				var l = DepthToTourMap[dx];
 				var si = First(0, l.Count, x => l[x] >= so);
 				var ei = First(0, l.Count, x => l[x] > eo);
+				if (si < ei) tourId = l[si];
 				return si < ei;
 			});
+			return Tour[tourId];
 		}
 
 		static int First(int l, int r, Func<int, bool> f)
