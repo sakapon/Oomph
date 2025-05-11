@@ -1,9 +1,9 @@
 ﻿using Oomph.Graphs.Trees10Lib.Trees.v200;
 
-namespace Trees10Test.Trees.v300
+namespace Trees10Test.Trees.LCA
 {
 	// Test: https://atcoder.jp/contests/abc014/tasks/abc014_4
-	class LCA_ABC014_D
+	class ABC014_D
 	{
 		static int[] Read() => Array.ConvertAll(Console.ReadLine().Split(), int.Parse);
 		static (int, int) Read2() { var a = Read(); return (a[0], a[1]); }

@@ -1,7 +1,7 @@
 ﻿using Oomph.Graphs.Trees10Lib.Common.Arrays;
 using Oomph.Graphs.Trees10Lib.Trees.v210;
 
-namespace Trees10Test.Trees.v300
+namespace Trees10Test.Trees.LCA
 {
 	// Test: https://atcoder.jp/contests/past201912-open/tasks/past201912_k
 	class PAST001_K
