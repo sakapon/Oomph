@@ -18,16 +18,21 @@ namespace UF09Test.UFs.v301.Static3
 			var es = Array.ConvertAll(new bool[m], _ => Read3());
 
 			var r = 0;
+			var eis = Enumerable.Range(0, m).ToArray();
+
 			for (int k = 30 - 1; k >= 0; k--)
 			{
-				var t = Array.FindAll(es, e => (e.w & (1 << k)) == 0);
+				var t = Array.FindAll(eis, ei => (es[ei].w & (1 << k)) == 0);
 
 				var uf = new UnionFind(n + 1);
-				foreach (var (u, v, _) in t)
+				foreach (var ei in t)
+				{
+					var (u, v, _) = es[ei];
 					uf.Union(u, v);
+				}
 
 				if (uf.AreSame(1, n))
-					es = t;
+					eis = t;
 				else
 					r |= 1 << k;
 			}
