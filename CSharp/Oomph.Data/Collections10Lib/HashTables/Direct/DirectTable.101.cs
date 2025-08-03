@@ -8,11 +8,13 @@ namespace Oomph.Data.Collections10Lib.HashTables.Direct.v101
 		readonly bool[] b;
 		readonly TValue[] values;
 		public int Count { get; private set; }
+		public TValue DefaultValue { get; }
 
-		public DirectMap(int n)
+		public DirectMap(int n, TValue v0 = default)
 		{
 			b = new bool[n];
 			values = new TValue[n];
+			DefaultValue = v0;
 		}
 
 		public void Clear()
@@ -23,7 +25,7 @@ namespace Oomph.Data.Collections10Lib.HashTables.Direct.v101
 
 		public TValue this[int key]
 		{
-			get => b[key] ? values[key] : throw new KeyNotFoundException();
+			get => b[key] ? values[key] : DefaultValue;
 			set
 			{
 				if (!b[key]) ++Count;
