@@ -8,9 +8,9 @@ namespace Oomph.Data.Collections10Lib.HashTables.Direct.v100
 		readonly bool[] b;
 		public int Count { get; private set; }
 
-		public DirectSet(int size)
+		public DirectSet(int n)
 		{
-			b = new bool[size];
+			b = new bool[n];
 		}
 
 		public void Clear()
