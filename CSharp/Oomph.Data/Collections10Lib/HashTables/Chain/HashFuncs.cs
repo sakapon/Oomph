@@ -5,6 +5,8 @@ namespace Oomph.Data.Collections10Lib.HashTables.Chain
 	public static class HashFuncs
 	{
 		static readonly Random Random = new();
+		public static uint NextUInt32() => NextUInt32(1L << 32);
+		public static uint NextUInt32(double maxValue) => (uint)(Random.NextDouble() * maxValue);
 
 		[Obsolete]
 		public static readonly Func<uint, int, int> Division = (key, size) => (int)(key & ((1U << size) - 1));
@@ -21,7 +23,7 @@ namespace Oomph.Data.Collections10Lib.HashTables.Chain
 			};
 		}
 
-		public static Func<uint, int, int> CreateMultiplication() => CreateMultiplication((uint)Random.Next());
+		public static Func<uint, int, int> CreateMultiplication() => CreateMultiplication(NextUInt32());
 		public static Func<uint, int, int> CreateMultiplication(uint a)
 		{
 			return (key, size) =>
