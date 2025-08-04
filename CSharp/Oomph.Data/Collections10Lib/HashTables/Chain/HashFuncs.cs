@@ -5,6 +5,9 @@ namespace Oomph.Data.Collections10Lib.HashTables.Chain
 	{
 		static readonly Random Random = new();
 
+		[Obsolete]
+		public static readonly Func<uint, int, int> Division = (key, size) => (int)(key % size);
+
 		public static Func<uint, int, int> CreateMultiplicationDouble() => CreateMultiplicationDouble(Random.NextDouble());
 		public static Func<uint, int, int> CreateMultiplicationDouble(double a)
 		{
