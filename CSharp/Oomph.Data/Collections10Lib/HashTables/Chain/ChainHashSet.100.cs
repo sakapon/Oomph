@@ -1,6 +1,16 @@
 ﻿
 namespace Oomph.Data.Collections10Lib.HashTables.Chain.v100
 {
+	public static class ComparerHelper
+	{
+		public static IEqualityComparer<T> GetDefaultEquality<T>()
+		{
+			// Speeds up a string comparison that is independent of language.
+			if (typeof(T) == typeof(string)) return (IEqualityComparer<T>)StringComparer.Ordinal;
+			return EqualityComparer<T>.Default;
+		}
+	}
+
 	// Add, Contains, Remove
 	// Count, Clear
 	public class ChainHashSet<T>
@@ -31,7 +41,7 @@ namespace Oomph.Data.Collections10Lib.HashTables.Chain.v100
 		{
 			this.bitSize = bitSize;
 			nodes = new Node[1 << bitSize];
-			Comparer = comparer ?? EqualityComparer<T>.Default;
+			Comparer = comparer ?? ComparerHelper.GetDefaultEquality<T>();
 			this.hashFunc = hashFunc ?? Hash0;
 		}
 
