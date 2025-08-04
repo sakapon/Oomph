@@ -1,4 +1,3 @@
-using System.Text;
 using Oomph.Data.Collections10Lib.HashTables.Chain.v100;
 
 namespace Collections10Test.HashTables.Chain
@@ -9,17 +8,17 @@ namespace Collections10Test.HashTables.Chain
 		static int[] Read() => Array.ConvertAll(Console.ReadLine().Split(), int.Parse);
 		static (int, int) Read2() { var a = Read(); return (a[0], a[1]); }
 		static (int, int, int) Read3() { var a = Read(); return (a[0], a[1], a[2]); }
-		static void Main()
+		static void Main() => Console.WriteLine(Solve());
+		static object Solve()
 		{
 			var (n, qc) = Read2();
+			var qs = Array.ConvertAll(new bool[qc], _ => Read3());
 
-			var sb = new StringBuilder();
+			var r = new List<bool>();
 			var set = new ChainHashSet<(int, int)>(20);
 
-			while (qc-- > 0)
+			foreach (var (t, a, b) in qs)
 			{
-				var (t, a, b) = Read3();
-
 				if (t == 1)
 				{
 					set.Add((a, b));
@@ -30,10 +29,10 @@ namespace Collections10Test.HashTables.Chain
 				}
 				else
 				{
-					sb.AppendLine(set.Contains((a, b)) && set.Contains((b, a)) ? "Yes" : "No");
+					r.Add(set.Contains((a, b)) && set.Contains((b, a)));
 				}
 			}
-			Console.Write(sb);
+			return string.Join("\n", r.Select(b => b ? "Yes" : "No"));
 		}
 	}
 }
