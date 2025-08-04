@@ -15,6 +15,14 @@ namespace Collections10Test.HashTables.Chain
 			h = HashFuncs.CreateMultiplication(b);
 			AreEqual(67, h(123456, 14));
 
+			TestHash(h);
+			TestHash(HashFuncs.CreateMultiplicationDouble());
+			TestHash(HashFuncs.CreateMultiplication());
+			TestHash(HashFuncs.CreateUniversal());
+		}
+
+		static void TestHash(Func<uint, int, int> h)
+		{
 			var seq = Enumerable.Range(700, 600).Select(i => h((uint)i, 10));
 			Console.WriteLine(seq.Distinct().Count());
 		}
@@ -22,7 +30,7 @@ namespace Collections10Test.HashTables.Chain
 		public static void AreEqual<T>(T expected, T actual)
 		{
 			if (!EqualityComparer<T>.Default.Equals(expected, actual))
-				throw new InvalidOperationException();
+				throw new InvalidOperationException("Not Equal");
 		}
 	}
 }
