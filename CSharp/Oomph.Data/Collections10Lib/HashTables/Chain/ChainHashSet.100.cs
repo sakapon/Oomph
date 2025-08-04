@@ -15,14 +15,12 @@ namespace Oomph.Data.Collections10Lib.HashTables.Chain.v100
 	// Count, Comparer, Clear
 	public class ChainHashSet<T>
 	{
-		static readonly double ad = (Math.Sqrt(5) - 1) / 2;
-		static readonly uint a = (uint)(ad * (1L << 32));
-		static int Hash0(uint key, int size)
+		const uint a = 2654435769;
+		static int HashDefault(uint key, int size)
 		{
-			var v = (ulong)key * a;
-			v &= uint.MaxValue;
-			v >>= 32 - size;
-			return (int)v;
+			key *= a;
+			key >>= 32 - size;
+			return (int)key;
 		}
 
 		public class Node
@@ -43,7 +41,7 @@ namespace Oomph.Data.Collections10Lib.HashTables.Chain.v100
 			this.bitSize = bitSize;
 			nodes = new Node[1 << bitSize];
 			Comparer = comparer ?? ComparerHelper.GetDefaultEquality<T>();
-			this.hashFunc = hashFunc ?? Hash0;
+			this.hashFunc = hashFunc ?? HashDefault;
 		}
 
 		public void Clear()

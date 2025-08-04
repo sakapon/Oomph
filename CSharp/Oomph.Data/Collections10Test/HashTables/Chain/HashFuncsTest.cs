@@ -5,7 +5,7 @@ namespace Collections10Test.HashTables.Chain
 	class HashFuncsTest
 	{
 		static readonly double a = (Math.Sqrt(5) - 1) / 2;
-		static readonly uint b = (uint)(a * (1L << 32));
+		static readonly uint b = (uint)(a * (1L << 32)); // 2654435769
 
 		static void Main()
 		{
