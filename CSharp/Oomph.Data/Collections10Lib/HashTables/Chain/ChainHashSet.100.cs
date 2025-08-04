@@ -12,15 +12,16 @@ namespace Oomph.Data.Collections10Lib.HashTables.Chain.v100
 	}
 
 	// Add, Contains, Remove
-	// Count, Clear
+	// Count, Comparer, Clear
 	public class ChainHashSet<T>
 	{
-		static readonly double a = (Math.Sqrt(5) - 1) / 2;
+		static readonly double ad = (Math.Sqrt(5) - 1) / 2;
+		static readonly uint a = (uint)(ad * (1L << 32));
 		static int Hash0(uint key, int size)
 		{
-			var v = key * a;
-			v -= Math.Floor(v);
-			v *= 1 << size;
+			var v = (ulong)key * a;
+			v &= uint.MaxValue;
+			v >>= 32 - size;
 			return (int)v;
 		}
 
