@@ -10,12 +10,12 @@ namespace Collections10Test.HashTables.Chain
 		static void Main()
 		{
 			var h = HashFuncs.CreateMultiplicationDouble(a);
-			AreEqual(67, h(123456, 1 << 14));
+			AreEqual(67, h(123456, 14));
 
 			h = HashFuncs.CreateMultiplication(b);
-			AreEqual(67, h(123456, 1 << 14));
+			AreEqual(67, h(123456, 14));
 
-			var seq = Enumerable.Range(700, 600).Select(i => h((uint)i, 1 << 10));
+			var seq = Enumerable.Range(700, 600).Select(i => h((uint)i, 10));
 			Console.WriteLine(seq.Distinct().Count());
 		}
 

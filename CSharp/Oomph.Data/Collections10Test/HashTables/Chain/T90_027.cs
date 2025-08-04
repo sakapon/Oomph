@@ -9,7 +9,7 @@ namespace Collections10Test.HashTables.Chain
 		{
 			var n = int.Parse(Console.ReadLine());
 
-			var set = new ChainHashSet<string>(1 << 18);
+			var set = new ChainHashSet<string>(18);
 
 			Console.SetOut(new StreamWriter(Console.OpenStandardOutput()) { AutoFlush = false });
 			for (int i = 1; i <= n; i++)

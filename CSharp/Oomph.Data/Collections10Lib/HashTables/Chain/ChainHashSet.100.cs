@@ -10,7 +10,7 @@ namespace Oomph.Data.Collections10Lib.HashTables.Chain.v100
 		{
 			var v = key * a;
 			v -= Math.Floor(v);
-			v *= size;
+			v *= 1 << size;
 			return (int)v;
 		}
 
@@ -20,16 +20,17 @@ namespace Oomph.Data.Collections10Lib.HashTables.Chain.v100
 			public Node Next;
 		}
 
-		readonly int size;
+		readonly int bitSize;
 		readonly Node[] nodes;
 		public int Count { get; private set; }
 		public IEqualityComparer<T> Comparer { get; }
 		readonly Func<uint, int, int> hashFunc;
-		int Hash(T key) => hashFunc((uint)(key?.GetHashCode() ?? 0), size);
+		int Hash(T key) => hashFunc((uint)(key?.GetHashCode() ?? 0), bitSize);
 
-		public ChainHashSet(int size, IEqualityComparer<T> comparer = null, Func<uint, int, int> hashFunc = null)
+		public ChainHashSet(int bitSize, IEqualityComparer<T> comparer = null, Func<uint, int, int> hashFunc = null)
 		{
-			nodes = new Node[this.size = size];
+			this.bitSize = bitSize;
+			nodes = new Node[1 << bitSize];
 			Comparer = comparer ?? EqualityComparer<T>.Default;
 			this.hashFunc = hashFunc ?? Hash0;
 		}
