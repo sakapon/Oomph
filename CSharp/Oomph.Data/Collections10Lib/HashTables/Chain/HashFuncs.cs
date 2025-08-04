@@ -35,14 +35,14 @@ namespace Oomph.Data.Collections10Lib.HashTables.Chain
 			};
 		}
 
-		public static Func<uint, int, int> CreateUniversal() => CreateUniversal(Random.Next(), Random.Next());
-		public static Func<uint, int, int> CreateUniversal(int a, int b)
+		public static Func<uint, int, int> CreateUniversal() => CreateUniversal(NextUInt32(uint.MaxValue) + 1, NextUInt32());
+		public static Func<uint, int, int> CreateUniversal(uint a, uint b)
 		{
 			return (key, size) =>
 			{
-				var v = key * a + b;
+				var v = (ulong)key * a + b;
 				v %= 4294967311;
-				v &= (1 << size) - 1;
+				v &= (1U << size) - 1;
 				return (int)v;
 			};
 		}
