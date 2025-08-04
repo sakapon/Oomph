@@ -6,9 +6,9 @@ namespace Oomph.Data.Collections10Lib.HashTables.Chain.v100
 	public class ChainHashSet<T>
 	{
 		static readonly double a = (Math.Sqrt(5) - 1) / 2;
-		static int Hash0(int key, int size)
+		static int Hash0(uint key, int size)
 		{
-			var v = (uint)key * a;
+			var v = key * a;
 			v -= Math.Floor(v);
 			v *= size;
 			return (int)v;
@@ -24,10 +24,10 @@ namespace Oomph.Data.Collections10Lib.HashTables.Chain.v100
 		readonly Node[] nodes;
 		public int Count { get; private set; }
 		public IEqualityComparer<T> Comparer { get; }
-		readonly Func<int, int, int> hashFunc;
-		int Hash(T key) => hashFunc(key?.GetHashCode() ?? 0, size);
+		readonly Func<uint, int, int> hashFunc;
+		int Hash(T key) => hashFunc((uint)(key?.GetHashCode() ?? 0), size);
 
-		public ChainHashSet(int size, IEqualityComparer<T> comparer = null, Func<int, int, int> hashFunc = null)
+		public ChainHashSet(int size, IEqualityComparer<T> comparer = null, Func<uint, int, int> hashFunc = null)
 		{
 			nodes = new Node[this.size = size];
 			Comparer = comparer ?? EqualityComparer<T>.Default;
