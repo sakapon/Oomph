@@ -16,8 +16,8 @@ namespace Oomph.Data.Collections10Lib.HashTables.Chain.v100
 
 		public class Node
 		{
-			public T Item;
-			public Node Next;
+			public T Item { get; init; }
+			internal Node Next;
 		}
 
 		readonly int bitSize;
