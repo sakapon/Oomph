@@ -145,4 +145,26 @@ namespace Oomph.Data.Collections10Lib.HashTables.Chain.v201
 			while ((n = n.ListNext) != ListFirst);
 		}
 	}
+
+	// Add, Contains, Remove
+	// Count, Comparer, Clear
+	public class ChainHashSet<T> : IEnumerable<T>
+	{
+		readonly FixedChainHashMap<T, bool> map;
+		public ChainHashSet(int bitSize, IEqualityComparer<T> comparer = null, Func<uint, int, int> hashFunc = null) => map = new(bitSize, default, comparer, hashFunc);
+		public int Count => map.Count;
+		public IEqualityComparer<T> Comparer => map.Comparer;
+		public void Clear() => map.Clear();
+		public bool Contains(T item) => map.ContainsKey(item);
+		public bool Add(T item) => map.Add(item, false);
+		public bool Remove(T item) => map.Remove(item);
+
+		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => GetEnumerator();
+		public IEnumerator<T> GetEnumerator()
+		{
+			var n = map.ListFirst;
+			do yield return n.Key;
+			while ((n = n.ListNext) != map.ListFirst);
+		}
+	}
 }
