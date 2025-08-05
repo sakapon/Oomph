@@ -2,7 +2,7 @@
 namespace Oomph.Data.Collections10Lib.HashTables.Direct.v101
 {
 	// Add, ContainsKey, Remove, Item[]
-	// Count, Clear
+	// Count, DefaultValue, Clear
 	public class DirectMap<TValue>
 	{
 		readonly bool[] b;
