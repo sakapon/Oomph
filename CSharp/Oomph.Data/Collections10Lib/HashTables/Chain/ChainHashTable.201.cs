@@ -13,15 +13,19 @@ namespace Oomph.Data.Collections10Lib.HashTables.Chain.v201
 
 	// Add, ContainsKey, Remove, Item[]
 	// Count, DefaultValue, Comparer, Clear
-	public class FixedChainHashMap<TKey, TValue>
+	[System.Diagnostics.DebuggerDisplay(@"Count = {Count}")]
+	public class FixedChainHashMap<TKey, TValue> : IEnumerable<FixedChainHashMap<TKey, TValue>.Node>
 	{
 		static int HashDefault(uint key, int size) => (int)((key * 2654435769) >> 32 - size);
 
+		[System.Diagnostics.DebuggerDisplay(@"Key = {Key}, Value = {Value}")]
 		public class Node
 		{
 			public TKey Key { get; init; }
 			public TValue Value { get; set; }
 			internal Node Next;
+
+			internal Node ListPrevious, ListNext;
 		}
 
 		readonly int bitSize;
@@ -87,8 +91,19 @@ namespace Oomph.Data.Collections10Lib.HashTables.Chain.v201
 
 		void AddStrictly(TKey key, TValue value, int h)
 		{
-			nodes[h] = new Node { Key = key, Value = value, Next = nodes[h] };
-			++Count;
+			var node = nodes[h] = new Node { Key = key, Value = value, Next = nodes[h] };
+
+			if (Count++ == 0)
+			{
+				ListFirst = node.ListPrevious = node.ListNext = node;
+			}
+			else
+			{
+				var last = ListFirst.ListPrevious;
+				ListFirst.ListPrevious = last.ListNext = node;
+				node.ListPrevious = last;
+				node.ListNext = ListFirst;
+			}
 		}
 
 		public bool Remove(TKey key)
@@ -102,9 +117,31 @@ namespace Oomph.Data.Collections10Lib.HashTables.Chain.v201
 		bool Remove(ref Node n, TKey key)
 		{
 			if (!Comparer.Equals(n.Key, key)) return false;
+
+			var node = n;
+			if (--Count == 0)
+			{
+				ListFirst = node.ListPrevious = node.ListNext = null;
+			}
+			else
+			{
+				if (ListFirst == node) ListFirst = node.ListNext;
+				node.ListPrevious.ListNext = node.ListNext;
+				node.ListNext.ListPrevious = node.ListPrevious;
+				node.ListPrevious = node.ListNext = null;
+			}
+
 			n = n.Next;
-			--Count;
 			return true;
+		}
+
+		internal Node ListFirst;
+		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => GetEnumerator();
+		public IEnumerator<Node> GetEnumerator()
+		{
+			var n = ListFirst;
+			do yield return n;
+			while ((n = n.ListNext) != ListFirst);
 		}
 	}
 }
