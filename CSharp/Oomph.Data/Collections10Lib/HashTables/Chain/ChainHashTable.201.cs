@@ -97,9 +97,11 @@ namespace Oomph.Data.Collections10Lib.HashTables.Chain.v201
 		}
 
 		#region Private Methods
-		bool AddStrictly(TKey key, TValue value, int h)
+		bool AddStrictly(TKey key, TValue value, int h) => AddStrictly(new Node { Key = key, Value = value }, h);
+		bool AddStrictly(Node node, int h)
 		{
-			var node = nodes[h] = new Node { Key = key, Value = value, Next = nodes[h] };
+			node.Next = nodes[h];
+			nodes[h] = node;
 
 			if (Count++ == 0)
 			{
