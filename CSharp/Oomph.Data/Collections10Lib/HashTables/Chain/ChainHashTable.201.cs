@@ -88,6 +88,15 @@ namespace Oomph.Data.Collections10Lib.HashTables.Chain.v201
 			else return false;
 		}
 
+		public bool Remove(TKey key)
+		{
+			var h = Hash(key);
+			for (ref var n = ref nodes[h]; n != null; n = ref n.Next)
+				if (Comparer.Equals(n.Key, key)) return RemoveStrictly(ref n);
+			return false;
+		}
+
+		#region Private Methods
 		bool AddStrictly(TKey key, TValue value, int h)
 		{
 			var node = nodes[h] = new Node { Key = key, Value = value, Next = nodes[h] };
@@ -104,14 +113,6 @@ namespace Oomph.Data.Collections10Lib.HashTables.Chain.v201
 				node.ListNext = ListFirst;
 			}
 			return true;
-		}
-
-		public bool Remove(TKey key)
-		{
-			var h = Hash(key);
-			for (ref var n = ref nodes[h]; n != null; n = ref n.Next)
-				if (Comparer.Equals(n.Key, key)) return RemoveStrictly(ref n);
-			return false;
 		}
 
 		bool RemoveStrictly(ref Node n)
@@ -133,6 +134,7 @@ namespace Oomph.Data.Collections10Lib.HashTables.Chain.v201
 			node.Next = null;
 			return true;
 		}
+		#endregion
 
 		internal Node ListFirst;
 		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => GetEnumerator();
