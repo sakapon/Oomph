@@ -4,15 +4,12 @@ namespace Collections10Test.HashTables.Chain
 {
 	class HashFuncsTest
 	{
-		static readonly double a = (Math.Sqrt(5) - 1) / 2;
-		static readonly uint b = (uint)(a * (1L << 32)); // 2654435769
-
 		static void Main()
 		{
-			var h = HashFuncs.CreateMultiplicationDouble(a);
+			var h = HashFuncs.CreateMultiplicationDouble(HashFuncs.MagicDouble);
 			AreEqual(67, h(123456, 14));
 
-			h = HashFuncs.CreateMultiplication(b);
+			h = HashFuncs.CreateMultiplication(HashFuncs.MagicUInt32);
 			AreEqual(67, h(123456, 14));
 
 			TestHash(h);

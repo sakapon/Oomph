@@ -4,6 +4,10 @@ namespace Oomph.Data.Collections10Lib.HashTables.Chain
 	// (key, bit size) => hash value
 	public static class HashFuncs
 	{
+		public static readonly double MagicDouble = (Math.Sqrt(5) - 1) / 2;
+		// 2654435769
+		public static readonly uint MagicUInt32 = (uint)(MagicDouble * (1L << 32));
+
 		static readonly Random Random = new();
 		public static uint NextUInt32() => NextUInt32(1L << 32);
 		public static uint NextUInt32(double maxValue) => (uint)(Random.NextDouble() * maxValue);
@@ -28,8 +32,7 @@ namespace Oomph.Data.Collections10Lib.HashTables.Chain
 		{
 			return (key, size) =>
 			{
-				var v = (ulong)key * a;
-				v &= uint.MaxValue;
+				var v = key * a;
 				v >>= 32 - size;
 				return (int)v;
 			};
