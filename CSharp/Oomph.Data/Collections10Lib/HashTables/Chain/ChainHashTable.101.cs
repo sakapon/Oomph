@@ -45,21 +45,37 @@ namespace Oomph.Data.Collections10Lib.HashTables.Chain.v101
 			Count = 0;
 		}
 
-		public bool ContainsKey(TKey key)
+		Node GetNode(TKey key)
 		{
 			var h = Hash(key);
 			for (var n = nodes[h]; n != null; n = n.Next)
-				if (Comparer.Equals(n.Key, key)) return true;
-			return false;
+				if (Comparer.Equals(n.Key, key)) return n;
+			return null;
 		}
 
-		public bool Add(TKey key)
+		public TValue this[TKey key]
+		{
+			get => GetNode(key).Value;
+			set
+			{
+				var n = GetNode(key);
+				if (n == null) Add(key, value);
+				else n.Value = value;
+			}
+		}
+
+		public bool ContainsKey(TKey key)
+		{
+			return GetNode(key) != null;
+		}
+
+		public bool Add(TKey key, TValue value)
 		{
 			var h = Hash(key);
 			for (var n = nodes[h]; n != null; n = n.Next)
 				if (Comparer.Equals(n.Key, key)) return false;
 
-			nodes[h] = new Node { Key = key, Next = nodes[h] };
+			nodes[h] = new Node { Key = key, Value = value, Next = nodes[h] };
 			++Count;
 			return true;
 		}
@@ -79,5 +95,19 @@ namespace Oomph.Data.Collections10Lib.HashTables.Chain.v101
 			--Count;
 			return true;
 		}
+	}
+
+	// Add, Contains, Remove
+	// Count, Comparer, Clear
+	public class ChainHashSet<T>
+	{
+		readonly ChainHashMap<T, bool> map;
+		public ChainHashSet(int bitSize, IEqualityComparer<T> comparer = null, Func<uint, int, int> hashFunc = null) => map = new(bitSize, comparer, hashFunc);
+		public int Count => map.Count;
+		public IEqualityComparer<T> Comparer => map.Comparer;
+		public void Clear() => map.Clear();
+		public bool Contains(T item) => map.ContainsKey(item);
+		public bool Add(T item) => map.Add(item, false);
+		public bool Remove(T item) => map.Remove(item);
 	}
 }

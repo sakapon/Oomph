@@ -62,7 +62,7 @@ namespace Oomph.Data.Collections10Lib.HashTables.Direct.v101
 	public class DirectSet
 	{
 		readonly DirectMap<bool> map;
-		public DirectSet(int n) => map = new DirectMap<bool>(n);
+		public DirectSet(int n) => map = new(n);
 		public int Count => map.Count;
 		public void Clear() => map.Clear();
 		public bool Contains(int item) => map.ContainsKey(item);
