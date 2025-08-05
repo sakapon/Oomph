@@ -1,6 +1,6 @@
 using Oomph.Data.Collections10Lib.HashTables.Chain.v100;
 
-namespace Collections10Test.HashTables.Chain
+namespace Collections10Test.HashTables.Sets
 {
 	// Test: https://atcoder.jp/contests/abc278/tasks/abc278_c
 	class ABC278_C

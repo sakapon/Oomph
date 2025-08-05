@@ -1,6 +1,6 @@
 using Oomph.Data.Collections10Lib.HashTables.Chain;
 
-namespace Collections10Test.HashTables.Chain
+namespace Collections10Test.HashTables.Helpers
 {
 	class HashFuncsTest
 	{
