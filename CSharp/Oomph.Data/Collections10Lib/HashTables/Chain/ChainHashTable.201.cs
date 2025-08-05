@@ -83,13 +83,12 @@ namespace Oomph.Data.Collections10Lib.HashTables.Chain.v201
 		public bool Add(TKey key, TValue value)
 		{
 			var h = Hash(key);
-			if (GetNode(key, h) != null) return false;
-
-			AddStrictly(key, value, h);
-			return true;
+			var n = GetNode(key, h);
+			if (n == null) return AddStrictly(key, value, h);
+			else return false;
 		}
 
-		void AddStrictly(TKey key, TValue value, int h)
+		bool AddStrictly(TKey key, TValue value, int h)
 		{
 			var node = nodes[h] = new Node { Key = key, Value = value, Next = nodes[h] };
 
@@ -104,20 +103,19 @@ namespace Oomph.Data.Collections10Lib.HashTables.Chain.v201
 				node.ListPrevious = last;
 				node.ListNext = ListFirst;
 			}
+			return true;
 		}
 
 		public bool Remove(TKey key)
 		{
 			var h = Hash(key);
 			for (ref var n = ref nodes[h]; n != null; n = ref n.Next)
-				if (Remove(ref n, key)) return true;
+				if (Comparer.Equals(n.Key, key)) return RemoveStrictly(ref n);
 			return false;
 		}
 
-		bool Remove(ref Node n, TKey key)
+		bool RemoveStrictly(ref Node n)
 		{
-			if (!Comparer.Equals(n.Key, key)) return false;
-
 			var node = n;
 			if (--Count == 0)
 			{
@@ -132,6 +130,7 @@ namespace Oomph.Data.Collections10Lib.HashTables.Chain.v201
 			}
 
 			n = n.Next;
+			node.Next = null;
 			return true;
 		}
 
