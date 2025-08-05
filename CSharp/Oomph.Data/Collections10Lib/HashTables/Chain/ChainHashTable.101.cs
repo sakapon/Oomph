@@ -65,8 +65,15 @@ namespace Oomph.Data.Collections10Lib.HashTables.Chain.v101
 			set
 			{
 				var n = GetNode(key);
-				if (n == null) Add(key, value);
-				else n.Value = value;
+				if (n != null)
+				{
+					n.Value = value;
+					return;
+				}
+
+				var h = Hash(key);
+				nodes[h] = new Node { Key = key, Value = value, Next = nodes[h] };
+				++Count;
 			}
 		}
 
@@ -77,10 +84,9 @@ namespace Oomph.Data.Collections10Lib.HashTables.Chain.v101
 
 		public bool Add(TKey key, TValue value)
 		{
-			var h = Hash(key);
-			for (var n = nodes[h]; n != null; n = n.Next)
-				if (Comparer.Equals(n.Key, key)) return false;
+			if (GetNode(key) != null) return false;
 
+			var h = Hash(key);
 			nodes[h] = new Node { Key = key, Value = value, Next = nodes[h] };
 			++Count;
 			return true;
