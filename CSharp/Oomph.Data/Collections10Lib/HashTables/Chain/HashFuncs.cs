@@ -32,9 +32,9 @@ namespace Oomph.Data.Collections10Lib.HashTables.Chain
 		{
 			return (key, size) =>
 			{
-				var v = key * a;
-				v >>= 32 - size;
-				return (int)v;
+				key *= a;
+				key >>= 32 - size;
+				return (int)key;
 			};
 		}
 

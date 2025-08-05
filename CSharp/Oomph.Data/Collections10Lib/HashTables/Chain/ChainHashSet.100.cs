@@ -15,13 +15,7 @@ namespace Oomph.Data.Collections10Lib.HashTables.Chain.v100
 	// Count, Comparer, Clear
 	public class ChainHashSet<T>
 	{
-		const uint a = 2654435769;
-		static int HashDefault(uint key, int size)
-		{
-			key *= a;
-			key >>= 32 - size;
-			return (int)key;
-		}
+		static int HashDefault(uint key, int size) => (int)((key * 2654435769) >> 32 - size);
 
 		public class Node
 		{
