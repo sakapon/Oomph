@@ -148,6 +148,29 @@ namespace Oomph.Data.Collections10Lib.HashTables.Chain.v201
 		}
 	}
 
+	// Add, ContainsKey, Remove, Item[]
+	// Count, DefaultValue, Comparer, Clear
+	public class ChainHashMap<TKey, TValue> : IEnumerable<FixedChainHashMap<TKey, TValue>.Node>
+	{
+		internal readonly FixedChainHashMap<TKey, TValue> map;
+		public ChainHashMap(TValue v0 = default, IEqualityComparer<TKey> comparer = null, Func<uint, int, int> hashFunc = null) => map = new(3, v0, comparer, hashFunc);
+		public int Count => map.Count;
+		public TValue DefaultValue => map.DefaultValue;
+		public IEqualityComparer<TKey> Comparer => map.Comparer;
+		public void Clear() => map.Clear();
+		public TValue this[TKey key]
+		{
+			get => map[key];
+			set => map[key] = value;
+		}
+		public bool ContainsKey(TKey key) => map.ContainsKey(key);
+		public bool Add(TKey key, TValue value) => map.Add(key, value);
+		public bool Remove(TKey key) => map.Remove(key);
+
+		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => GetEnumerator();
+		public IEnumerator<FixedChainHashMap<TKey, TValue>.Node> GetEnumerator() => map.GetEnumerator();
+	}
+
 	// Add, Contains, Remove
 	// Count, Comparer, Clear
 	public class ChainHashSet<T> : IEnumerable<T>
