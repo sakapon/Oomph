@@ -53,10 +53,10 @@ namespace Oomph.Data.Collections10Lib.HashTables.Chain.v301
 			n.Next = null;
 		}
 
-		public void Resize(int bitSize, IEnumerable<ChainNode<TKey, TValue>> nodes, Func<uint, int, int> hashFunc)
+		public void Resize(int bitSize, ChainNode<TKey, TValue> anchor, Func<uint, int, int> hashFunc)
 		{
 			table = new ChainNode<TKey, TValue>[1 << bitSize];
-			foreach (var n in nodes)
+			for (var n = anchor.ListNext; n != anchor; n = n.ListNext)
 				Add(n, hashFunc((uint)(n.Key?.GetHashCode() ?? 0), bitSize));
 		}
 	}
@@ -82,6 +82,8 @@ namespace Oomph.Data.Collections10Lib.HashTables.Chain.v301
 			table = new(bitSize, comparer ?? ComparerHelper.GetDefaultEquality<TKey>());
 			DefaultValue = iv;
 			this.hashFunc = hashFunc ?? HashDefault;
+
+			ListAnchor.ListPrevious = ListAnchor.ListNext = ListAnchor;
 		}
 
 		public void Clear()
@@ -133,18 +135,12 @@ namespace Oomph.Data.Collections10Lib.HashTables.Chain.v301
 		{
 			var node = new ChainNode<TKey, TValue> { Key = key, Value = value };
 			table.Add(node, h);
+			++Count;
 
-			if (Count++ == 0)
-			{
-				ListFirst = node.ListPrevious = node.ListNext = node;
-			}
-			else
-			{
-				var last = ListFirst.ListPrevious;
-				ListFirst.ListPrevious = last.ListNext = node;
-				node.ListPrevious = last;
-				node.ListNext = ListFirst;
-			}
+			var last = ListAnchor.ListPrevious;
+			ListAnchor.ListPrevious = last.ListNext = node;
+			node.ListPrevious = last;
+			node.ListNext = ListAnchor;
 
 			Resize();
 		}
@@ -152,36 +148,23 @@ namespace Oomph.Data.Collections10Lib.HashTables.Chain.v301
 		void RemoveStrictly(ref ChainNode<TKey, TValue> nodeRef)
 		{
 			var node = nodeRef;
-			if (--Count == 0)
-			{
-				ListFirst = node.ListPrevious = node.ListNext = null;
-			}
-			else
-			{
-				if (ListFirst == node) ListFirst = node.ListNext;
-				node.ListPrevious.ListNext = node.ListNext;
-				node.ListNext.ListPrevious = node.ListPrevious;
-				node.ListPrevious = node.ListNext = null;
-			}
+			node.ListPrevious.ListNext = node.ListNext;
+			node.ListNext.ListPrevious = node.ListPrevious;
+			node.ListPrevious = node.ListNext = null;
 
+			--Count;
 			table.Remove(ref nodeRef);
 		}
 
 		void Resize()
 		{
-			if (Count > 1 << bitSize - 1) table.Resize(++bitSize, this, hashFunc);
+			if (Count > 1 << bitSize - 1) table.Resize(++bitSize, ListAnchor, hashFunc);
 		}
 		#endregion
 
-		internal ChainNode<TKey, TValue> ListFirst;
+		internal readonly ChainNode<TKey, TValue> ListAnchor = new();
 		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => GetEnumerator();
-		public IEnumerator<ChainNode<TKey, TValue>> GetEnumerator()
-		{
-			var n = ListFirst;
-			if (n == null) yield break;
-			do yield return n;
-			while ((n = n.ListNext) != ListFirst);
-		}
+		public IEnumerator<ChainNode<TKey, TValue>> GetEnumerator() { for (var n = ListAnchor.ListNext; n != ListAnchor; n = n.ListNext) yield return n; }
 	}
 
 	// Add, Contains, Remove
@@ -198,12 +181,6 @@ namespace Oomph.Data.Collections10Lib.HashTables.Chain.v301
 		public bool Remove(T item) => map.Remove(item);
 
 		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => GetEnumerator();
-		public IEnumerator<T> GetEnumerator()
-		{
-			var n = map.ListFirst;
-			if (n == null) yield break;
-			do yield return n.Key;
-			while ((n = n.ListNext) != map.ListFirst);
-		}
+		public IEnumerator<T> GetEnumerator() { for (var n = map.ListAnchor.ListNext; n != map.ListAnchor; n = n.ListNext) yield return n.Key; }
 	}
 }
