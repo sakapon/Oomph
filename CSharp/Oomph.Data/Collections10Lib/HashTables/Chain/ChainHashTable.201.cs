@@ -28,12 +28,12 @@ namespace Oomph.Data.Collections10Lib.HashTables.Chain.v201
 			internal Node ListPrevious, ListNext;
 		}
 
-		readonly int bitSize;
+		internal readonly int bitSize;
 		readonly Node[] nodes;
 		public int Count { get; private set; }
 		public TValue DefaultValue { get; }
 		public IEqualityComparer<TKey> Comparer { get; }
-		readonly Func<uint, int, int> hashFunc;
+		internal readonly Func<uint, int, int> hashFunc;
 		int Hash(TKey key) => hashFunc((uint)(key?.GetHashCode() ?? 0), bitSize);
 
 		public FixedChainHashMap(int bitSize, TValue v0 = default, IEqualityComparer<TKey> comparer = null, Func<uint, int, int> hashFunc = null)
@@ -43,6 +43,14 @@ namespace Oomph.Data.Collections10Lib.HashTables.Chain.v201
 			DefaultValue = v0;
 			Comparer = comparer ?? ComparerHelper.GetDefaultEquality<TKey>();
 			this.hashFunc = hashFunc ?? HashDefault;
+		}
+
+		public FixedChainHashMap<TKey, TValue> Clone(int bitSize)
+		{
+			FixedChainHashMap<TKey, TValue> map = new(bitSize, DefaultValue, Comparer, hashFunc);
+			foreach (var node in this)
+				map.AddStrictly(node, Hash(node.Key));
+			return map;
 		}
 
 		public void Clear()
@@ -152,20 +160,30 @@ namespace Oomph.Data.Collections10Lib.HashTables.Chain.v201
 	// Count, DefaultValue, Comparer, Clear
 	public class ChainHashMap<TKey, TValue> : IEnumerable<FixedChainHashMap<TKey, TValue>.Node>
 	{
-		internal readonly FixedChainHashMap<TKey, TValue> map;
-		public ChainHashMap(TValue v0 = default, IEqualityComparer<TKey> comparer = null, Func<uint, int, int> hashFunc = null) => map = new(3, v0, comparer, hashFunc);
+		internal FixedChainHashMap<TKey, TValue> map;
+		public ChainHashMap(TValue v0 = default, IEqualityComparer<TKey> comparer = null, Func<uint, int, int> hashFunc = null) => map = new(2, v0, comparer, hashFunc);
 		public int Count => map.Count;
 		public TValue DefaultValue => map.DefaultValue;
 		public IEqualityComparer<TKey> Comparer => map.Comparer;
-		public void Clear() => map.Clear();
+		public void Clear() => map = new(2, map.DefaultValue, map.Comparer, map.hashFunc);
 		public TValue this[TKey key]
 		{
 			get => map[key];
-			set => map[key] = value;
+			set { map[key] = value; Resize(); }
 		}
 		public bool ContainsKey(TKey key) => map.ContainsKey(key);
-		public bool Add(TKey key, TValue value) => map.Add(key, value);
+		public bool Add(TKey key, TValue value)
+		{
+			var r = map.Add(key, value);
+			Resize();
+			return r;
+		}
 		public bool Remove(TKey key) => map.Remove(key);
+
+		void Resize()
+		{
+			if (1 << map.bitSize < map.Count) map = map.Clone(map.bitSize + 1);
+		}
 
 		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => GetEnumerator();
 		public IEnumerator<FixedChainHashMap<TKey, TValue>.Node> GetEnumerator() => map.GetEnumerator();
