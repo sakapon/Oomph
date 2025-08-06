@@ -175,8 +175,8 @@ namespace Oomph.Data.Collections10Lib.HashTables.Chain.v201
 	// Count, Comparer, Clear
 	public class ChainHashSet<T> : IEnumerable<T>
 	{
-		readonly FixedChainHashMap<T, bool> map;
-		public ChainHashSet(int bitSize, IEqualityComparer<T> comparer = null, Func<uint, int, int> hashFunc = null) => map = new(bitSize, default, comparer, hashFunc);
+		readonly ChainHashMap<T, bool> map;
+		public ChainHashSet(IEqualityComparer<T> comparer = null, Func<uint, int, int> hashFunc = null) => map = new(default, comparer, hashFunc);
 		public int Count => map.Count;
 		public IEqualityComparer<T> Comparer => map.Comparer;
 		public void Clear() => map.Clear();
@@ -187,9 +187,9 @@ namespace Oomph.Data.Collections10Lib.HashTables.Chain.v201
 		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => GetEnumerator();
 		public IEnumerator<T> GetEnumerator()
 		{
-			var n = map.ListFirst;
+			var n = map.map.ListFirst;
 			do yield return n.Key;
-			while ((n = n.ListNext) != map.ListFirst);
+			while ((n = n.ListNext) != map.map.ListFirst);
 		}
 	}
 }
