@@ -11,53 +11,88 @@ namespace Oomph.Data.Collections10Lib.HashTables.Chain.v301
 		}
 	}
 
-	// Add, ContainsKey, Remove, Item[]
-	// Count, DefaultValue, Comparer, Clear
-	[System.Diagnostics.DebuggerDisplay(@"Count = {Count}")]
-	public class ChainHashTable<TKey, TValue> : IEnumerable<ChainHashTable<TKey, TValue>.Node>
+	[System.Diagnostics.DebuggerDisplay(@"Key = {Key}, Value = {Value}")]
+	public class ChainNode<TKey, TValue>
 	{
-		static int HashDefault(uint key, int size) => (int)((key * 2654435769) >> 32 - size);
+		public TKey Key { get; init; }
+		public TValue Value { get; set; }
+		internal ChainNode<TKey, TValue> Next;
 
-		[System.Diagnostics.DebuggerDisplay(@"Key = {Key}, Value = {Value}")]
-		public class Node
+		internal ChainNode<TKey, TValue> ListPrevious, ListNext;
+	}
+
+	class ChainHashTable<TKey, TValue>
+	{
+		ChainNode<TKey, TValue>[] table;
+		internal readonly IEqualityComparer<TKey> Comparer;
+
+		public ChainHashTable(int bitSize, IEqualityComparer<TKey> comparer)
 		{
-			public TKey Key { get; init; }
-			public TValue Value { get; set; }
-			internal Node Next;
-
-			internal Node ListPrevious, ListNext;
+			table = new ChainNode<TKey, TValue>[1 << bitSize];
+			Comparer = comparer;
 		}
 
-		internal readonly int bitSize;
-		readonly Node[] nodes;
+		public ref ChainNode<TKey, TValue> GetNode(TKey key, int h)
+		{
+			ref var n = ref table[h];
+			for (; n != null; n = ref n.Next)
+				if (Comparer.Equals(n.Key, key)) return ref n;
+			return ref n;
+		}
+
+		public void Add(ChainNode<TKey, TValue> node, int h)
+		{
+			node.Next = table[h];
+			table[h] = node;
+		}
+
+		public void Remove(ref ChainNode<TKey, TValue> node)
+		{
+			var n = node;
+			node = node.Next;
+			n.Next = null;
+		}
+
+		public void Resize(int bitSize, IEnumerable<ChainNode<TKey, TValue>> nodes, Func<uint, int, int> hashFunc)
+		{
+			table = new ChainNode<TKey, TValue>[1 << bitSize];
+			foreach (var n in nodes)
+				Add(n, hashFunc((uint)(n.Key?.GetHashCode() ?? 0), bitSize));
+		}
+	}
+
+	// Add, ContainsKey, Remove, Item[], GetNode
+	// Count, DefaultValue, Comparer, Clear
+	[System.Diagnostics.DebuggerDisplay(@"Count = {Count}")]
+	public class ChainHashMap<TKey, TValue> : IEnumerable<ChainNode<TKey, TValue>>
+	{
+		const int DefaultBitSize = 3;
+		int bitSize = DefaultBitSize;
+		ChainHashTable<TKey, TValue> table;
 		public int Count { get; private set; }
 		public TValue DefaultValue { get; }
-		public IEqualityComparer<TKey> Comparer { get; }
+		public IEqualityComparer<TKey> Comparer => table.Comparer;
+
+		static int HashDefault(uint key, int size) => (int)((key * 2654435769) >> 32 - size);
 		internal readonly Func<uint, int, int> hashFunc;
 		int Hash(TKey key) => hashFunc((uint)(key?.GetHashCode() ?? 0), bitSize);
 
-		public ChainHashTable(int bitSize, TValue v0 = default, IEqualityComparer<TKey> comparer = null, Func<uint, int, int> hashFunc = null)
+		public ChainHashMap(TValue iv = default, IEqualityComparer<TKey> comparer = null, Func<uint, int, int> hashFunc = null)
 		{
-			this.bitSize = bitSize;
-			nodes = new Node[1 << bitSize];
-			DefaultValue = v0;
-			Comparer = comparer ?? ComparerHelper.GetDefaultEquality<TKey>();
+			table = new(bitSize, comparer ?? ComparerHelper.GetDefaultEquality<TKey>());
+			DefaultValue = iv;
 			this.hashFunc = hashFunc ?? HashDefault;
 		}
 
 		public void Clear()
 		{
-			Array.Clear(nodes);
+			bitSize = DefaultBitSize;
+			table = new(bitSize, table.Comparer);
 			Count = 0;
 		}
 
-		public Node GetNode(TKey key) => GetNode(key, Hash(key));
-		Node GetNode(TKey key, int h)
-		{
-			for (var n = nodes[h]; n != null; n = n.Next)
-				if (Comparer.Equals(n.Key, key)) return n;
-			return null;
-		}
+		public ChainNode<TKey, TValue> GetNode(TKey key) => table.GetNode(key, Hash(key));
+		public bool ContainsKey(TKey key) => GetNode(key) != null;
 
 		public TValue this[TKey key]
 		{
@@ -69,39 +104,35 @@ namespace Oomph.Data.Collections10Lib.HashTables.Chain.v301
 			set
 			{
 				var h = Hash(key);
-				var n = GetNode(key, h);
+				var n = table.GetNode(key, h);
 				if (n == null) AddStrictly(key, value, h);
 				else n.Value = value;
 			}
 		}
 
-		public bool ContainsKey(TKey key)
-		{
-			return GetNode(key) != null;
-		}
-
 		public bool Add(TKey key, TValue value)
 		{
 			var h = Hash(key);
-			var n = GetNode(key, h);
-			if (n == null) return AddStrictly(key, value, h);
-			else return false;
+			var n = table.GetNode(key, h);
+			if (n != null) return false;
+			AddStrictly(key, value, h);
+			return true;
 		}
 
 		public bool Remove(TKey key)
 		{
 			var h = Hash(key);
-			for (ref var n = ref nodes[h]; n != null; n = ref n.Next)
-				if (Comparer.Equals(n.Key, key)) return RemoveStrictly(ref n);
-			return false;
+			ref var n = ref table.GetNode(key, h);
+			if (n == null) return false;
+			RemoveStrictly(ref n);
+			return true;
 		}
 
 		#region Private Methods
-		bool AddStrictly(TKey key, TValue value, int h) => AddStrictly(new Node { Key = key, Value = value }, h);
-		bool AddStrictly(Node node, int h)
+		void AddStrictly(TKey key, TValue value, int h)
 		{
-			node.Next = nodes[h];
-			nodes[h] = node;
+			var node = new ChainNode<TKey, TValue> { Key = key, Value = value };
+			table.Add(node, h);
 
 			if (Count++ == 0)
 			{
@@ -114,12 +145,13 @@ namespace Oomph.Data.Collections10Lib.HashTables.Chain.v301
 				node.ListPrevious = last;
 				node.ListNext = ListFirst;
 			}
-			return true;
+
+			Resize();
 		}
 
-		bool RemoveStrictly(ref Node n)
+		void RemoveStrictly(ref ChainNode<TKey, TValue> nodeRef)
 		{
-			var node = n;
+			var node = nodeRef;
 			if (--Count == 0)
 			{
 				ListFirst = node.ListPrevious = node.ListNext = null;
@@ -132,17 +164,21 @@ namespace Oomph.Data.Collections10Lib.HashTables.Chain.v301
 				node.ListPrevious = node.ListNext = null;
 			}
 
-			n = n.Next;
-			node.Next = null;
-			return true;
+			table.Remove(ref nodeRef);
+		}
+
+		void Resize()
+		{
+			if (Count > 1 << bitSize - 1) table.Resize(++bitSize, this, hashFunc);
 		}
 		#endregion
 
-		internal Node ListFirst;
+		internal ChainNode<TKey, TValue> ListFirst;
 		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => GetEnumerator();
-		public IEnumerator<Node> GetEnumerator()
+		public IEnumerator<ChainNode<TKey, TValue>> GetEnumerator()
 		{
 			var n = ListFirst;
+			if (n == null) yield break;
 			do yield return n;
 			while ((n = n.ListNext) != ListFirst);
 		}
