@@ -1,4 +1,4 @@
-using Oomph.Data.Collections10Lib.HashTables.Chain.v201;
+using Oomph.Data.Collections10Lib.HashTables.Chain.v301;
 
 namespace Collections10Test.HashTables.Maps
 {
