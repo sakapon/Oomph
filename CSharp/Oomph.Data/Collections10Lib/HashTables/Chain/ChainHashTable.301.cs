@@ -32,6 +32,11 @@ namespace Oomph.Data.Collections10Lib.HashTables.Chain.v301
 			Comparer = comparer;
 		}
 
+		public void Clear(int bitSize)
+		{
+			table = new ChainNode<TKey, TValue>[1 << bitSize];
+		}
+
 		public ref ChainNode<TKey, TValue> GetNode(TKey key, int h)
 		{
 			ref var n = ref table[h];
@@ -51,13 +56,6 @@ namespace Oomph.Data.Collections10Lib.HashTables.Chain.v301
 			var n = node;
 			node = node.Next;
 			n.Next = null;
-		}
-
-		public void Resize(int bitSize, ChainNode<TKey, TValue> anchor, Func<uint, int, int> hashFunc)
-		{
-			table = new ChainNode<TKey, TValue>[1 << bitSize];
-			for (var n = anchor.ListNext; n != anchor; n = n.ListNext)
-				Add(n, hashFunc((uint)(n.Key?.GetHashCode() ?? 0), bitSize));
 		}
 	}
 
@@ -158,17 +156,35 @@ namespace Oomph.Data.Collections10Lib.HashTables.Chain.v301
 
 		void Resize()
 		{
-			if (Count > 1 << bitSize - 1) table.Resize(++bitSize, ListAnchor, hashFunc);
+			if (Count > 1 << bitSize - 1)
+			{
+				table.Clear(++bitSize);
+				foreach (var n in GetNodes())
+					table.Add(n, Hash(n.Key));
+			}
 		}
 		#endregion
 
+		IEnumerable<ChainNode<TKey, TValue>> GetNodes()
+		{
+			for (var n = ListAnchor.ListNext; n != ListAnchor; n = n.ListNext)
+				yield return n;
+		}
+
+		public IEnumerable<TKey> GetKeys()
+		{
+			for (var n = ListAnchor.ListNext; n != ListAnchor; n = n.ListNext)
+				yield return n.Key;
+		}
+
 		internal readonly ChainNode<TKey, TValue> ListAnchor = new();
 		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => GetEnumerator();
-		public IEnumerator<ChainNode<TKey, TValue>> GetEnumerator() { for (var n = ListAnchor.ListNext; n != ListAnchor; n = n.ListNext) yield return n; }
+		public IEnumerator<ChainNode<TKey, TValue>> GetEnumerator() => GetNodes().GetEnumerator();
 	}
 
 	// Add, Contains, Remove
 	// Count, Comparer, Clear
+	[System.Diagnostics.DebuggerDisplay(@"Count = {Count}")]
 	public class ChainHashSet<T> : IEnumerable<T>
 	{
 		readonly ChainHashMap<T, bool> map;
@@ -181,6 +197,6 @@ namespace Oomph.Data.Collections10Lib.HashTables.Chain.v301
 		public bool Remove(T item) => map.Remove(item);
 
 		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => GetEnumerator();
-		public IEnumerator<T> GetEnumerator() { for (var n = map.ListAnchor.ListNext; n != map.ListAnchor; n = n.ListNext) yield return n.Key; }
+		public IEnumerator<T> GetEnumerator() => map.GetKeys().GetEnumerator();
 	}
 }
