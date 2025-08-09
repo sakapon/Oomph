@@ -106,15 +106,19 @@ namespace Oomph.Data.Collections10Lib.HashTables.Chain.v301
 	public class ChainHashMap<TKey, TValue> : IEnumerable<ChainNode<TKey, TValue>>
 	{
 		const int DefaultBitSize = 3;
-		int bitSize = DefaultBitSize;
+
 		readonly ChainHashTable<TKey, TValue> table;
 		readonly NodeList<TKey, TValue> nodeList = new();
+
+		int bitSize = DefaultBitSize;
+		int CountSup => 1 << bitSize - 1;
 		public int Count { get; private set; }
+
 		public TValue DefaultValue { get; }
 		public IEqualityComparer<TKey> Comparer => table.Comparer;
 
 		static uint HashDefault(uint key, int size) => (key * 2654435769) >> 32 - size;
-		internal readonly Func<uint, int, uint> hashFunc;
+		readonly Func<uint, int, uint> hashFunc;
 		int Hash(TKey key) => (int)hashFunc((uint)(key?.GetHashCode() ?? 0), bitSize);
 
 		public ChainHashMap(TValue iv = default, IEqualityComparer<TKey> comparer = null, Func<uint, int, uint> hashFunc = null)
@@ -189,7 +193,7 @@ namespace Oomph.Data.Collections10Lib.HashTables.Chain.v301
 
 		void Resize()
 		{
-			if (Count > 1 << bitSize - 1)
+			if (Count > CountSup)
 			{
 				table.Clear(++bitSize);
 				foreach (var n in nodeList.GetNodes())
