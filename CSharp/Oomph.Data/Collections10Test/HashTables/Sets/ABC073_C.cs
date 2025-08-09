@@ -1,4 +1,4 @@
-using Oomph.Data.Collections10Lib.HashTables.Chain.v101;
+using Oomph.Data.Collections10Lib.HashTables.Chain.v301;
 
 namespace Collections10Test.HashTables.Sets
 {
@@ -11,7 +11,7 @@ namespace Collections10Test.HashTables.Sets
 			var n = int.Parse(Console.ReadLine());
 			var a = Array.ConvertAll(new bool[n], _ => int.Parse(Console.ReadLine()));
 
-			var set = new ChainHashSet<int>(18);
+			var set = new ChainHashSet<int>(n);
 			foreach (var x in a)
 				if (!set.Add(x)) set.Remove(x);
 			return set.Count;

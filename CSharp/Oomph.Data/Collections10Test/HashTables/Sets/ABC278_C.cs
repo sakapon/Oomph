@@ -1,4 +1,4 @@
-using Oomph.Data.Collections10Lib.HashTables.Chain.v100;
+using Oomph.Data.Collections10Lib.HashTables.Chain.v301;
 
 namespace Collections10Test.HashTables.Sets
 {
@@ -15,7 +15,7 @@ namespace Collections10Test.HashTables.Sets
 			var qs = Array.ConvertAll(new bool[qc], _ => Read3());
 
 			var r = new List<bool>();
-			var set = new ChainHashSet<(int, int)>(20);
+			var set = new ChainHashSet<(int, int)>(qc);
 
 			foreach (var (t, a, b) in qs)
 			{

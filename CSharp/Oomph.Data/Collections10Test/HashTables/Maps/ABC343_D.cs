@@ -1,4 +1,4 @@
-using Oomph.Data.Collections10Lib.HashTables.Chain.v101;
+using Oomph.Data.Collections10Lib.HashTables.Chain.v301;
 
 namespace Collections10Test.HashTables.Maps
 {
@@ -10,14 +10,14 @@ namespace Collections10Test.HashTables.Maps
 		static void Main() => Console.WriteLine(Solve());
 		static object Solve()
 		{
-			var (n, m) = Read2();
-			var ps = Array.ConvertAll(new bool[m], _ => Read2());
+			var (n, t) = Read2();
+			var ps = Array.ConvertAll(new bool[t], _ => Read2());
 
 			var r = new List<int>();
 			var c = 1;
 
 			var s = new long[n + 1];
-			var d = new ChainHashMap<long, int>(20);
+			var d = new ChainHashMap<long, int>(t);
 			d[0] = n;
 
 			foreach (var (a, b) in ps)
