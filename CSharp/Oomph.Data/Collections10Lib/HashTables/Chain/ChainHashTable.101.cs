@@ -11,7 +11,7 @@ namespace Oomph.Data.Collections10Lib.HashTables.Chain.v101
 		}
 	}
 
-	// Add, ContainsKey, Remove, Item[]
+	// Add, Contains, Remove, Item[]
 	// Count, DefaultValue, Comparer, Clear
 	public class ChainHashMap<TKey, TValue>
 	{
@@ -71,7 +71,7 @@ namespace Oomph.Data.Collections10Lib.HashTables.Chain.v101
 			}
 		}
 
-		public bool ContainsKey(TKey key)
+		public bool Contains(TKey key)
 		{
 			return GetNode(key) != null;
 		}
@@ -117,7 +117,7 @@ namespace Oomph.Data.Collections10Lib.HashTables.Chain.v101
 		public int Count => map.Count;
 		public IEqualityComparer<T> Comparer => map.Comparer;
 		public void Clear() => map.Clear();
-		public bool Contains(T item) => map.ContainsKey(item);
+		public bool Contains(T item) => map.Contains(item);
 		public bool Add(T item) => map.Add(item, false);
 		public bool Remove(T item) => map.Remove(item);
 	}

@@ -11,7 +11,7 @@ namespace Oomph.Data.Collections10Lib.HashTables.Chain.v201
 		}
 	}
 
-	// Add, ContainsKey, Remove, Item[]
+	// Add, Contains, Remove, Item[]
 	// Count, DefaultValue, Comparer, Clear
 	[System.Diagnostics.DebuggerDisplay(@"Count = {Count}")]
 	public class FixedChainHashMap<TKey, TValue> : IEnumerable<FixedChainHashMap<TKey, TValue>.Node>
@@ -83,7 +83,7 @@ namespace Oomph.Data.Collections10Lib.HashTables.Chain.v201
 			}
 		}
 
-		public bool ContainsKey(TKey key)
+		public bool Contains(TKey key)
 		{
 			return GetNode(key) != null;
 		}
@@ -156,7 +156,7 @@ namespace Oomph.Data.Collections10Lib.HashTables.Chain.v201
 		}
 	}
 
-	// Add, ContainsKey, Remove, Item[]
+	// Add, Contains, Remove, Item[]
 	// Count, DefaultValue, Comparer, Clear
 	public class ChainHashMap<TKey, TValue> : IEnumerable<FixedChainHashMap<TKey, TValue>.Node>
 	{
@@ -171,7 +171,7 @@ namespace Oomph.Data.Collections10Lib.HashTables.Chain.v201
 			get => map[key];
 			set { map[key] = value; Resize(); }
 		}
-		public bool ContainsKey(TKey key) => map.ContainsKey(key);
+		public bool Contains(TKey key) => map.Contains(key);
 		public bool Add(TKey key, TValue value)
 		{
 			var r = map.Add(key, value);
@@ -198,7 +198,7 @@ namespace Oomph.Data.Collections10Lib.HashTables.Chain.v201
 		public int Count => map.Count;
 		public IEqualityComparer<T> Comparer => map.Comparer;
 		public void Clear() => map.Clear();
-		public bool Contains(T item) => map.ContainsKey(item);
+		public bool Contains(T item) => map.Contains(item);
 		public bool Add(T item) => map.Add(item, false);
 		public bool Remove(T item) => map.Remove(item);
 

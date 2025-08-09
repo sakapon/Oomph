@@ -1,7 +1,7 @@
 ﻿
 namespace Oomph.Data.Collections10Lib.HashTables.Direct.v101
 {
-	// Add, ContainsKey, Remove, Item[]
+	// Add, Contains, Remove, Item[]
 	// Count, DefaultValue, Clear
 	public class DirectMap<TValue>
 	{
@@ -34,7 +34,7 @@ namespace Oomph.Data.Collections10Lib.HashTables.Direct.v101
 			}
 		}
 
-		public bool ContainsKey(int key)
+		public bool Contains(int key)
 		{
 			return b[key];
 		}
@@ -65,7 +65,7 @@ namespace Oomph.Data.Collections10Lib.HashTables.Direct.v101
 		public DirectSet(int n) => map = new(n);
 		public int Count => map.Count;
 		public void Clear() => map.Clear();
-		public bool Contains(int item) => map.ContainsKey(item);
+		public bool Contains(int item) => map.Contains(item);
 		public bool Add(int item) => map.Add(item, false);
 		public bool Remove(int item) => map.Remove(item);
 	}
