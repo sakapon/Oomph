@@ -44,36 +44,36 @@ namespace Oomph.Data.Collections10Lib.HashTables.Chain.v100
 			Count = 0;
 		}
 
-		public bool Contains(TKey item)
+		public bool Contains(TKey key)
 		{
-			var h = Hash(item);
+			var h = Hash(key);
 			for (var n = nodes[h]; n != null; n = n.Next)
-				if (Comparer.Equals(n.Item, item)) return true;
+				if (Comparer.Equals(n.Item, key)) return true;
 			return false;
 		}
 
-		public bool Add(TKey item)
+		public bool Add(TKey key)
 		{
-			var h = Hash(item);
+			var h = Hash(key);
 			for (var n = nodes[h]; n != null; n = n.Next)
-				if (Comparer.Equals(n.Item, item)) return false;
+				if (Comparer.Equals(n.Item, key)) return false;
 
-			nodes[h] = new Node { Item = item, Next = nodes[h] };
+			nodes[h] = new Node { Item = key, Next = nodes[h] };
 			++Count;
 			return true;
 		}
 
-		public bool Remove(TKey item)
+		public bool Remove(TKey key)
 		{
-			var h = Hash(item);
+			var h = Hash(key);
 			for (ref var n = ref nodes[h]; n != null; n = ref n.Next)
-				if (Remove(ref n, item)) return true;
+				if (Remove(ref n, key)) return true;
 			return false;
 		}
 
-		bool Remove(ref Node n, TKey item)
+		bool Remove(ref Node n, TKey key)
 		{
-			if (!Comparer.Equals(n.Item, item)) return false;
+			if (!Comparer.Equals(n.Item, key)) return false;
 			n = n.Next;
 			--Count;
 			return true;

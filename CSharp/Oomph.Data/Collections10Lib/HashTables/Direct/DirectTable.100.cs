@@ -19,23 +19,23 @@ namespace Oomph.Data.Collections10Lib.HashTables.Direct.v100
 			Count = 0;
 		}
 
-		public bool Contains(int item)
+		public bool Contains(int key)
 		{
-			return b[item];
+			return b[key];
 		}
 
-		public bool Add(int item)
+		public bool Add(int key)
 		{
-			if (b[item]) return false;
-			b[item] = true;
+			if (b[key]) return false;
+			b[key] = true;
 			++Count;
 			return true;
 		}
 
-		public bool Remove(int item)
+		public bool Remove(int key)
 		{
-			if (!b[item]) return false;
-			b[item] = false;
+			if (!b[key]) return false;
+			b[key] = false;
 			--Count;
 			return true;
 		}

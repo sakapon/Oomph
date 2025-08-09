@@ -215,9 +215,9 @@ namespace Oomph.Data.Collections10Lib.HashTables.Chain.v301
 		public int Count => map.Count;
 		public IEqualityComparer<TKey> Comparer => map.Comparer;
 		public void Clear() => map.Clear();
-		public bool Contains(TKey item) => map.Contains(item);
-		public bool Add(TKey item) => map.Add(item, false);
-		public bool Remove(TKey item) => map.Remove(item);
+		public bool Contains(TKey key) => map.Contains(key);
+		public bool Add(TKey key) => map.Add(key, false);
+		public bool Remove(TKey key) => map.Remove(key);
 
 		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => GetEnumerator();
 		public IEnumerator<TKey> GetEnumerator() => map.GetKeys().GetEnumerator();

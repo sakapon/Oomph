@@ -65,8 +65,8 @@ namespace Oomph.Data.Collections10Lib.HashTables.Direct.v101
 		public DirectSet(int n) => map = new(n);
 		public int Count => map.Count;
 		public void Clear() => map.Clear();
-		public bool Contains(int item) => map.Contains(item);
-		public bool Add(int item) => map.Add(item, false);
-		public bool Remove(int item) => map.Remove(item);
+		public bool Contains(int key) => map.Contains(key);
+		public bool Add(int key) => map.Add(key, false);
+		public bool Remove(int key) => map.Remove(key);
 	}
 }
