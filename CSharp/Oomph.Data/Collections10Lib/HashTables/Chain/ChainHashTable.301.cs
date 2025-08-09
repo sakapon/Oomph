@@ -181,7 +181,11 @@ namespace Oomph.Data.Collections10Lib.HashTables.Chain.v301
 			nodeList.Add(node);
 			++Count;
 
-			Resize();
+			if (CountSup < Count)
+			{
+				++bitSize;
+				ResizeStrictly();
+			}
 		}
 
 		void RemoveStrictly(ref ChainNode<TKey, TValue> node)
@@ -191,14 +195,11 @@ namespace Oomph.Data.Collections10Lib.HashTables.Chain.v301
 			table.Remove(ref node);
 		}
 
-		void Resize()
+		void ResizeStrictly()
 		{
-			if (Count > CountSup)
-			{
-				table.Clear(++bitSize);
-				foreach (var n in nodeList.GetNodes())
-					table.Add(n, Hash(n.Key));
-			}
+			table.Clear(bitSize);
+			foreach (var n in nodeList.GetNodes())
+				table.Add(n, Hash(n.Key));
 		}
 		#endregion
 
@@ -207,6 +208,21 @@ namespace Oomph.Data.Collections10Lib.HashTables.Chain.v301
 
 		public IEnumerable<TKey> GetKeys() => nodeList.GetKeys();
 		public IEnumerable<TValue> GetValues() => nodeList.GetValues();
+
+		public void AddItems((TKey, TValue)[] items, bool strictly = false)
+		{
+			var newSize = Count + items.Length;
+			var bitSize0 = bitSize;
+			while (CountSup < newSize) ++bitSize;
+			if (bitSize0 < bitSize) ResizeStrictly();
+
+			if (strictly)
+				foreach (var (key, value) in items)
+					AddStrictly(key, value, Hash(key));
+			else
+				foreach (var (key, value) in items)
+					Add(key, value);
+		}
 	}
 
 	// Add, Contains, Remove
@@ -225,5 +241,7 @@ namespace Oomph.Data.Collections10Lib.HashTables.Chain.v301
 
 		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => GetEnumerator();
 		public IEnumerator<TKey> GetEnumerator() => map.GetKeys().GetEnumerator();
+
+		public void AddKeys(TKey[] keys, bool strictly = false) => map.AddItems(Array.ConvertAll(keys, key => (key, false)), strictly);
 	}
 }

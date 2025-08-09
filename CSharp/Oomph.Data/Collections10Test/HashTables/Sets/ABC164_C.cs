@@ -1,4 +1,4 @@
-using Oomph.Data.Collections10Lib.HashTables.Chain.v100;
+using Oomph.Data.Collections10Lib.HashTables.Chain.v301;
 
 namespace Collections10Test.HashTables.Sets
 {
@@ -12,9 +12,8 @@ namespace Collections10Test.HashTables.Sets
 			var n = int.Parse(Console.ReadLine());
 			var ss = Array.ConvertAll(new bool[n], _ => Console.ReadLine());
 
-			var set = new ChainHashSet<string>(20);
-			foreach (var s in ss)
-				set.Add(s);
+			var set = new ChainHashSet<string>();
+			set.AddKeys(ss);
 			return set.Count;
 		}
 	}

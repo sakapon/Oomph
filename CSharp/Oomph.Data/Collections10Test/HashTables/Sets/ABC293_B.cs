@@ -13,8 +13,7 @@ namespace Collections10Test.HashTables.Sets
 			var a = Read();
 
 			var set = new ChainHashSet<int>();
-			for (int i = 0; i < n; i++)
-				set.Add(i + 1);
+			set.AddKeys(Enumerable.Range(1, n).ToArray(), true);
 
 			for (int i = 0; i < n; i++)
 				if (set.Contains(i + 1)) set.Remove(a[i]);
