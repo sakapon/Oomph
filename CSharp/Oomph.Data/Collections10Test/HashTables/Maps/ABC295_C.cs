@@ -13,7 +13,7 @@ namespace Collections10Test.HashTables.Maps
 			var n = int.Parse(Console.ReadLine());
 			var a = Read();
 
-			var map = new ChainHashMap<int, int>();
+			var map = new ChainHashMap<int, int>(n);
 			foreach (var x in a) map[x]++;
 			return map.Sum(p => p.Value / 2);
 		}

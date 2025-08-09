@@ -1,4 +1,4 @@
-using Oomph.Data.Collections10Lib.HashTables.Chain.v100;
+using Oomph.Data.Collections10Lib.HashTables.Chain.v301;
 
 namespace Collections10Test.HashTables.Sets
 {
@@ -9,7 +9,7 @@ namespace Collections10Test.HashTables.Sets
 		{
 			var n = int.Parse(Console.ReadLine());
 
-			var set = new ChainHashSet<string>(18);
+			var set = new ChainHashSet<string>(n);
 
 			Console.SetOut(new StreamWriter(Console.OpenStandardOutput()) { AutoFlush = false });
 			for (int i = 1; i <= n; i++)

@@ -26,9 +26,9 @@ namespace Oomph.Data.Collections10Lib.HashTables.Chain.v301
 		ChainNode<TKey, TValue>[] table;
 		internal readonly IEqualityComparer<TKey> Comparer;
 
-		public ChainHashTable(int bitSize, IEqualityComparer<TKey> comparer)
+		// 初期化のために Clear メソッドを呼び出す必要があります。
+		public ChainHashTable(IEqualityComparer<TKey> comparer)
 		{
-			Clear(bitSize);
 			Comparer = comparer;
 		}
 
@@ -110,7 +110,7 @@ namespace Oomph.Data.Collections10Lib.HashTables.Chain.v301
 		readonly ChainHashTable<TKey, TValue> table;
 		readonly NodeList<TKey, TValue> nodeList = new();
 
-		int bitSize = DefaultBitSize;
+		int bitSize;
 		int CountSup => 1 << bitSize - 1;
 		public int Count { get; private set; }
 
@@ -121,16 +121,19 @@ namespace Oomph.Data.Collections10Lib.HashTables.Chain.v301
 		readonly Func<uint, int, uint> hashFunc;
 		int Hash(TKey key) => (int)hashFunc((uint)(key?.GetHashCode() ?? 0), bitSize);
 
-		public ChainHashMap(TValue iv = default, IEqualityComparer<TKey> comparer = null, Func<uint, int, uint> hashFunc = null)
+		public ChainHashMap(int size = 4, TValue iv = default, IEqualityComparer<TKey> comparer = null, Func<uint, int, uint> hashFunc = null)
 		{
-			table = new(bitSize, comparer ?? ComparerHelper.GetDefaultEquality<TKey>());
+			table = new(comparer ?? ComparerHelper.GetDefaultEquality<TKey>());
 			DefaultValue = iv;
 			this.hashFunc = hashFunc ?? HashDefault;
+
+			Clear(size);
 		}
 
-		public void Clear()
+		public void Clear(int size = 4)
 		{
 			bitSize = DefaultBitSize;
+			while (CountSup < size) ++bitSize;
 			table.Clear(bitSize);
 			nodeList.Clear();
 			Count = 0;
@@ -203,6 +206,7 @@ namespace Oomph.Data.Collections10Lib.HashTables.Chain.v301
 		}
 		#endregion
 
+		#region Collection
 		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => GetEnumerator();
 		public IEnumerator<ChainNode<TKey, TValue>> GetEnumerator() => nodeList.GetNodes().GetEnumerator();
 
@@ -223,6 +227,7 @@ namespace Oomph.Data.Collections10Lib.HashTables.Chain.v301
 				foreach (var (key, value) in items)
 					Add(key, value);
 		}
+		#endregion
 	}
 
 	// Add, Contains, Remove
@@ -231,7 +236,7 @@ namespace Oomph.Data.Collections10Lib.HashTables.Chain.v301
 	public class ChainHashSet<TKey> : IEnumerable<TKey>
 	{
 		readonly ChainHashMap<TKey, bool> map;
-		public ChainHashSet(IEqualityComparer<TKey> comparer = null, Func<uint, int, uint> hashFunc = null) => map = new(default, comparer, hashFunc);
+		public ChainHashSet(int size = 4, IEqualityComparer<TKey> comparer = null, Func<uint, int, uint> hashFunc = null) => map = new(size, default, comparer, hashFunc);
 		public int Count => map.Count;
 		public IEqualityComparer<TKey> Comparer => map.Comparer;
 		public void Clear() => map.Clear();
