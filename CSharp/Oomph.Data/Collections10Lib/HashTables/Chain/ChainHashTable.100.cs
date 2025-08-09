@@ -13,28 +13,28 @@ namespace Oomph.Data.Collections10Lib.HashTables.Chain.v100
 
 	// Add, Contains, Remove
 	// Count, Comparer, Clear
-	public class ChainHashSet<T>
+	public class ChainHashSet<TKey>
 	{
 		static int HashDefault(uint key, int size) => (int)((key * 2654435769) >> 32 - size);
 
 		public class Node
 		{
-			public T Item { get; init; }
+			public TKey Item { get; init; }
 			internal Node Next;
 		}
 
 		readonly int bitSize;
 		readonly Node[] nodes;
 		public int Count { get; private set; }
-		public IEqualityComparer<T> Comparer { get; }
+		public IEqualityComparer<TKey> Comparer { get; }
 		readonly Func<uint, int, int> hashFunc;
-		int Hash(T key) => hashFunc((uint)(key?.GetHashCode() ?? 0), bitSize);
+		int Hash(TKey key) => hashFunc((uint)(key?.GetHashCode() ?? 0), bitSize);
 
-		public ChainHashSet(int bitSize, IEqualityComparer<T> comparer = null, Func<uint, int, int> hashFunc = null)
+		public ChainHashSet(int bitSize, IEqualityComparer<TKey> comparer = null, Func<uint, int, int> hashFunc = null)
 		{
 			this.bitSize = bitSize;
 			nodes = new Node[1 << bitSize];
-			Comparer = comparer ?? ComparerHelper.GetDefaultEquality<T>();
+			Comparer = comparer ?? ComparerHelper.GetDefaultEquality<TKey>();
 			this.hashFunc = hashFunc ?? HashDefault;
 		}
 
@@ -44,7 +44,7 @@ namespace Oomph.Data.Collections10Lib.HashTables.Chain.v100
 			Count = 0;
 		}
 
-		public bool Contains(T item)
+		public bool Contains(TKey item)
 		{
 			var h = Hash(item);
 			for (var n = nodes[h]; n != null; n = n.Next)
@@ -52,7 +52,7 @@ namespace Oomph.Data.Collections10Lib.HashTables.Chain.v100
 			return false;
 		}
 
-		public bool Add(T item)
+		public bool Add(TKey item)
 		{
 			var h = Hash(item);
 			for (var n = nodes[h]; n != null; n = n.Next)
@@ -63,7 +63,7 @@ namespace Oomph.Data.Collections10Lib.HashTables.Chain.v100
 			return true;
 		}
 
-		public bool Remove(T item)
+		public bool Remove(TKey item)
 		{
 			var h = Hash(item);
 			for (ref var n = ref nodes[h]; n != null; n = ref n.Next)
@@ -71,7 +71,7 @@ namespace Oomph.Data.Collections10Lib.HashTables.Chain.v100
 			return false;
 		}
 
-		bool Remove(ref Node n, T item)
+		bool Remove(ref Node n, TKey item)
 		{
 			if (!Comparer.Equals(n.Item, item)) return false;
 			n = n.Next;

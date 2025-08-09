@@ -110,15 +110,15 @@ namespace Oomph.Data.Collections10Lib.HashTables.Chain.v101
 
 	// Add, Contains, Remove
 	// Count, Comparer, Clear
-	public class ChainHashSet<T>
+	public class ChainHashSet<TKey>
 	{
-		readonly ChainHashMap<T, bool> map;
-		public ChainHashSet(int bitSize, IEqualityComparer<T> comparer = null, Func<uint, int, int> hashFunc = null) => map = new(bitSize, default, comparer, hashFunc);
+		readonly ChainHashMap<TKey, bool> map;
+		public ChainHashSet(int bitSize, IEqualityComparer<TKey> comparer = null, Func<uint, int, int> hashFunc = null) => map = new(bitSize, default, comparer, hashFunc);
 		public int Count => map.Count;
-		public IEqualityComparer<T> Comparer => map.Comparer;
+		public IEqualityComparer<TKey> Comparer => map.Comparer;
 		public void Clear() => map.Clear();
-		public bool Contains(T item) => map.Contains(item);
-		public bool Add(T item) => map.Add(item, false);
-		public bool Remove(T item) => map.Remove(item);
+		public bool Contains(TKey item) => map.Contains(item);
+		public bool Add(TKey item) => map.Add(item, false);
+		public bool Remove(TKey item) => map.Remove(item);
 	}
 }

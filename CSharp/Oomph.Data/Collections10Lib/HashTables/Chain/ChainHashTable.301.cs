@@ -208,18 +208,18 @@ namespace Oomph.Data.Collections10Lib.HashTables.Chain.v301
 	// Add, Contains, Remove
 	// Count, Comparer, Clear
 	[System.Diagnostics.DebuggerDisplay(@"Count = {Count}")]
-	public class ChainHashSet<T> : IEnumerable<T>
+	public class ChainHashSet<TKey> : IEnumerable<TKey>
 	{
-		readonly ChainHashMap<T, bool> map;
-		public ChainHashSet(IEqualityComparer<T> comparer = null, Func<uint, int, int> hashFunc = null) => map = new(default, comparer, hashFunc);
+		readonly ChainHashMap<TKey, bool> map;
+		public ChainHashSet(IEqualityComparer<TKey> comparer = null, Func<uint, int, int> hashFunc = null) => map = new(default, comparer, hashFunc);
 		public int Count => map.Count;
-		public IEqualityComparer<T> Comparer => map.Comparer;
+		public IEqualityComparer<TKey> Comparer => map.Comparer;
 		public void Clear() => map.Clear();
-		public bool Contains(T item) => map.Contains(item);
-		public bool Add(T item) => map.Add(item, false);
-		public bool Remove(T item) => map.Remove(item);
+		public bool Contains(TKey item) => map.Contains(item);
+		public bool Add(TKey item) => map.Add(item, false);
+		public bool Remove(TKey item) => map.Remove(item);
 
 		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => GetEnumerator();
-		public IEnumerator<T> GetEnumerator() => map.GetKeys().GetEnumerator();
+		public IEnumerator<TKey> GetEnumerator() => map.GetKeys().GetEnumerator();
 	}
 }
