@@ -15,7 +15,7 @@ namespace Oomph.Data.Collections10Lib.HashTables.Chain.v101
 	// Count, DefaultValue, Comparer, Clear
 	public class ChainHashMap<TKey, TValue>
 	{
-		static int HashDefault(uint key, int size) => (int)((key * 2654435769) >> 32 - size);
+		static uint HashDefault(uint key, int size) => (key * 2654435769) >> 32 - size;
 
 		public class Node
 		{
@@ -29,10 +29,10 @@ namespace Oomph.Data.Collections10Lib.HashTables.Chain.v101
 		public int Count { get; private set; }
 		public TValue DefaultValue { get; }
 		public IEqualityComparer<TKey> Comparer { get; }
-		readonly Func<uint, int, int> hashFunc;
-		int Hash(TKey key) => hashFunc((uint)(key?.GetHashCode() ?? 0), bitSize);
+		readonly Func<uint, int, uint> hashFunc;
+		int Hash(TKey key) => (int)hashFunc((uint)(key?.GetHashCode() ?? 0), bitSize);
 
-		public ChainHashMap(int bitSize, TValue v0 = default, IEqualityComparer<TKey> comparer = null, Func<uint, int, int> hashFunc = null)
+		public ChainHashMap(int bitSize, TValue v0 = default, IEqualityComparer<TKey> comparer = null, Func<uint, int, uint> hashFunc = null)
 		{
 			this.bitSize = bitSize;
 			nodes = new Node[1 << bitSize];
@@ -113,7 +113,7 @@ namespace Oomph.Data.Collections10Lib.HashTables.Chain.v101
 	public class ChainHashSet<TKey>
 	{
 		readonly ChainHashMap<TKey, bool> map;
-		public ChainHashSet(int bitSize, IEqualityComparer<TKey> comparer = null, Func<uint, int, int> hashFunc = null) => map = new(bitSize, default, comparer, hashFunc);
+		public ChainHashSet(int bitSize, IEqualityComparer<TKey> comparer = null, Func<uint, int, uint> hashFunc = null) => map = new(bitSize, default, comparer, hashFunc);
 		public int Count => map.Count;
 		public IEqualityComparer<TKey> Comparer => map.Comparer;
 		public void Clear() => map.Clear();

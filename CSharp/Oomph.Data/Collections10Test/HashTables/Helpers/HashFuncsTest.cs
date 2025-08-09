@@ -7,10 +7,10 @@ namespace Collections10Test.HashTables.Helpers
 		static void Main()
 		{
 			var h = HashFuncs.CreateMultiplicationDouble(HashFuncs.MagicDouble);
-			AreEqual(67, h(123456, 14));
+			AreEqual(67U, h(123456, 14));
 
 			h = HashFuncs.CreateMultiplication(HashFuncs.MagicUInt32);
-			AreEqual(67, h(123456, 14));
+			AreEqual(67U, h(123456, 14));
 
 			TestHash(h);
 			TestHash(HashFuncs.CreateMultiplicationDouble());
@@ -18,7 +18,7 @@ namespace Collections10Test.HashTables.Helpers
 			TestHash(HashFuncs.CreateUniversal());
 		}
 
-		static void TestHash(Func<uint, int, int> h)
+		static void TestHash(Func<uint, int, uint> h)
 		{
 			var seq = Enumerable.Range(700, 600).Select(i => h((uint)i, 10));
 			Console.WriteLine(seq.Distinct().Count());

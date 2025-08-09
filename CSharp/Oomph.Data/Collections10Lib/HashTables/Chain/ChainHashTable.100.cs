@@ -15,7 +15,7 @@ namespace Oomph.Data.Collections10Lib.HashTables.Chain.v100
 	// Count, Comparer, Clear
 	public class ChainHashSet<TKey>
 	{
-		static int HashDefault(uint key, int size) => (int)((key * 2654435769) >> 32 - size);
+		static uint HashDefault(uint key, int size) => (key * 2654435769) >> 32 - size;
 
 		public class Node
 		{
@@ -27,10 +27,10 @@ namespace Oomph.Data.Collections10Lib.HashTables.Chain.v100
 		readonly Node[] nodes;
 		public int Count { get; private set; }
 		public IEqualityComparer<TKey> Comparer { get; }
-		readonly Func<uint, int, int> hashFunc;
-		int Hash(TKey key) => hashFunc((uint)(key?.GetHashCode() ?? 0), bitSize);
+		readonly Func<uint, int, uint> hashFunc;
+		int Hash(TKey key) => (int)hashFunc((uint)(key?.GetHashCode() ?? 0), bitSize);
 
-		public ChainHashSet(int bitSize, IEqualityComparer<TKey> comparer = null, Func<uint, int, int> hashFunc = null)
+		public ChainHashSet(int bitSize, IEqualityComparer<TKey> comparer = null, Func<uint, int, uint> hashFunc = null)
 		{
 			this.bitSize = bitSize;
 			nodes = new Node[1 << bitSize];
