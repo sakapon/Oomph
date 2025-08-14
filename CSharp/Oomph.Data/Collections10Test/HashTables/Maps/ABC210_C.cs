@@ -30,7 +30,7 @@ namespace Collections10Test.HashTables.Maps
 		}
 	}
 
-	public static class ValuesEx
+	public static class MathEx
 	{
 		public static int Chmax(this ref int x, int v) => x < v ? x = v : x;
 		public static int Chmin(this ref int x, int v) => x > v ? x = v : x;
