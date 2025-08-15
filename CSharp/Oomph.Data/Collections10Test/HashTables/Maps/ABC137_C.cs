@@ -18,7 +18,7 @@ namespace Collections10Test.HashTables.Maps
 				var cs = s.ToCharArray();
 				Array.Sort(cs);
 				var t = new string(cs);
-				r += map[t]++;
+				r += map.GetOrAddNode(t).Value++;
 			}
 			return r;
 		}

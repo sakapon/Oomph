@@ -142,6 +142,12 @@ namespace Oomph.Data.Collections10Lib.HashTables.Chain.v301
 		public ChainNode<TKey, TValue> GetNode(TKey key) => table.GetNode(key, Hash(key));
 		public bool Contains(TKey key) => GetNode(key) != null;
 
+		public ChainNode<TKey, TValue> GetOrAddNode(TKey key)
+		{
+			var h = Hash(key);
+			return table.GetNode(key, h) ?? AddStrictly(key, DefaultValue, h);
+		}
+
 		public TValue this[TKey key]
 		{
 			get
@@ -149,13 +155,7 @@ namespace Oomph.Data.Collections10Lib.HashTables.Chain.v301
 				var n = GetNode(key);
 				return n != null ? n.Value : DefaultValue;
 			}
-			set
-			{
-				var h = Hash(key);
-				var n = table.GetNode(key, h);
-				if (n == null) AddStrictly(key, value, h);
-				else n.Value = value;
-			}
+			set => GetOrAddNode(key).Value = value;
 		}
 
 		public bool Add(TKey key, TValue value)
@@ -177,7 +177,7 @@ namespace Oomph.Data.Collections10Lib.HashTables.Chain.v301
 		}
 
 		#region Private Methods
-		void AddStrictly(TKey key, TValue value, int h)
+		ChainNode<TKey, TValue> AddStrictly(TKey key, TValue value, int h)
 		{
 			var node = new ChainNode<TKey, TValue> { Key = key, Value = value };
 			table.Add(node, h);
@@ -189,6 +189,7 @@ namespace Oomph.Data.Collections10Lib.HashTables.Chain.v301
 				++bitSize;
 				ResizeStrictly();
 			}
+			return node;
 		}
 
 		void RemoveStrictly(ref ChainNode<TKey, TValue> node)

@@ -14,7 +14,7 @@ namespace Collections10Test.HashTables.Maps
 			var a = Read();
 
 			var map = new ChainHashMap<int, int>(n);
-			foreach (var x in a) map[x]++;
+			foreach (var x in a) map.GetOrAddNode(x).Value++;
 			return map.Sum(p => p.Value / 2);
 		}
 	}

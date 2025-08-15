@@ -22,7 +22,7 @@ namespace Collections10Test.HashTables.Maps
 			{
 				s += v;
 				s %= m;
-				r += map[s]++;
+				r += map.GetOrAddNode(s).Value++;
 			}
 			return r;
 		}
