@@ -30,8 +30,9 @@ namespace Collections10Test.HashTables.Maps
 		}
 	}
 
-	public static class MathEx
+	public static class RefEx
 	{
+		public static void Swap<T>(ref T x, ref T y) => (x, y) = (y, x);
 		public static int Chmax(this ref int x, int v) => x < v ? x = v : x;
 		public static int Chmin(this ref int x, int v) => x > v ? x = v : x;
 		public static T Chmax<T>(this ref T x, T v) where T : struct, IComparable<T> => x.CompareTo(v) < 0 ? x = v : x;
