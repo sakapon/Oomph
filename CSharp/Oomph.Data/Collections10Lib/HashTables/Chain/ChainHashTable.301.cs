@@ -15,7 +15,8 @@ namespace Oomph.Data.Collections10Lib.HashTables.Chain.v301
 	public class ChainNode<TKey, TValue>
 	{
 		public TKey Key { get; init; }
-		public TValue Value { get; set; }
+		TValue value;
+		public ref TValue Value => ref value;
 		internal ChainNode<TKey, TValue> Next;
 
 		internal ChainNode<TKey, TValue> ListPrevious, ListNext;

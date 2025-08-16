@@ -21,7 +21,7 @@ namespace Collections10Test.HashTables.Maps
 				if (s[i] != 'R') continue;
 
 				var (x, y) = ps[i];
-				map[y] = Math.Min(map[y], x);
+				map.GetOrAddNode(y).Value.Chmin(x);
 			}
 
 			for (int i = 0; i < n; i++)

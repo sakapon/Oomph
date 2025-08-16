@@ -13,11 +13,10 @@ namespace Collections10Test.HashTables.Maps
 			var n = int.Parse(Console.ReadLine());
 			var ps = Array.ConvertAll(new bool[n], _ => Read2());
 
-			var d = new ChainHashMap<int, int>(n, int.MaxValue);
-
+			var map = new ChainHashMap<int, int>(n, int.MaxValue);
 			foreach (var (a, c) in ps)
-				d[c] = Math.Min(d[c], a);
-			return d.GetValues().Max();
+				map.GetOrAddNode(c).Value.Chmin(a);
+			return map.GetValues().Max();
 		}
 	}
 }
