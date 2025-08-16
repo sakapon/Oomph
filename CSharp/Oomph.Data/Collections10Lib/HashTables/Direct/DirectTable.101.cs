@@ -10,11 +10,11 @@ namespace Oomph.Data.Collections10Lib.HashTables.Direct.v101
 		public int Count { get; private set; }
 		public TValue DefaultValue { get; }
 
-		public DirectMap(int n, TValue v0 = default)
+		public DirectMap(int n, TValue iv = default)
 		{
 			b = new bool[n];
 			values = new TValue[n];
-			DefaultValue = v0;
+			DefaultValue = iv;
 		}
 
 		public void Clear()
