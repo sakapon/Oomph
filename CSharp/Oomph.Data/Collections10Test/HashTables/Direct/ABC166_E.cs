@@ -3,6 +3,7 @@ using Oomph.Data.Collections10Lib.HashTables.Direct.v101;
 namespace Collections10Test.HashTables.Direct
 {
 	// Test: https://atcoder.jp/contests/abc166/tasks/abc166_e
+	// Test: https://atcoder.jp/contests/abc417/tasks/abc417_c
 	class ABC166_E
 	{
 		static int[] Read() => Array.ConvertAll(Console.ReadLine().Split(), int.Parse);
