@@ -14,16 +14,13 @@ namespace Collections10Test.HashTables.Direct
 
 			var max = 200000;
 			var set = new DirectSet(max + 1);
-			for (int i = 0; i <= max; i++)
-				set.Add(i);
 
 			var r = new List<int>();
 			var m = 0;
 			foreach (var v in p)
 			{
-				set.Remove(v);
-				if (m == v)
-					m = Enumerable.Range(m + 1, max).First(set.Contains);
+				set.Add(v);
+				while (set.Contains(m)) m++;
 				r.Add(m);
 			}
 			return string.Join("\n", r);
