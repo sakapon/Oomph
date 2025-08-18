@@ -3,7 +3,10 @@
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
+    <AssemblyName>Oomph.Data.$(MSBuildProjectName)</AssemblyName>
+    <RootNamespace>Oomph.Data.$(MSBuildProjectName.Replace(" ", "_"))</RootNamespace>
+    <Title>Oomph.Data.$(MSBuildProjectName)</Title>
+    <AssemblyTitle>Oomph.Data.$(MSBuildProjectName)</AssemblyTitle>
   </PropertyGroup>
 
 </Project>
