@@ -1,5 +1,6 @@
 ﻿// mutable array
 // hash: ∑ B^i a_i
+// M = 2^32 としているため不可
 
 namespace Oomph.Data.Values10Lib.Arrays.RHs.v110
 {
