@@ -33,5 +33,6 @@ namespace Oomph.Data.Values10Lib.Arrays.RHs.v100
 
 		public override int GetHashCode() => h[0];
 		public int GetHashCode(int l, int r) => h[l] - h[r] * pow[r - l];
+		public int GetHashCodeByCount(int start, int count) => GetHashCode(start, start + count);
 	}
 }
