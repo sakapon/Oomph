@@ -4,7 +4,10 @@ namespace Oomph.Data.Values10Lib.Arrays.ZHs.v100
 {
 	public class ZobristHashArray<T>
 	{
-		const int B = (int)(2654435769L - (1L << 32));
+		// 2^32 * (√5-1) / 2 に近い素数
+		const int B = (int)(2654435761L - (1L << 32));
+		// 2^32 * (√3-1) / 2 に近い素数
+		const int C = 1572067127;
 		static int Hash(T o) => o?.GetHashCode() ?? 0;
 
 		readonly T[] a;
@@ -18,7 +21,7 @@ namespace Oomph.Data.Values10Lib.Arrays.ZHs.v100
 			n = a.Length;
 
 			for (int i = 0; i < n; ++i)
-				h ^= B * Hash(a[i]);
+				h ^= B * i + C * Hash(a[i]);
 		}
 
 		public T this[int i]
@@ -26,9 +29,9 @@ namespace Oomph.Data.Values10Lib.Arrays.ZHs.v100
 			get => a[i];
 			set
 			{
-				h ^= B * Hash(a[i]);
+				h ^= B * i + C * Hash(a[i]);
 				a[i] = value;
-				h ^= B * Hash(a[i]);
+				h ^= B * i + C * Hash(a[i]);
 			}
 		}
 
