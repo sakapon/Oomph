@@ -24,16 +24,21 @@ namespace Oomph.Data.Collections10Lib.HashTables.Cuckoo.v100
 		class Container
 		{
 			readonly int bitSize;
-			public Node[] nodes;
+			readonly Node[] nodes;
 			public IEqualityComparer<TKey> Comparer { get; }
 			readonly Func<uint, int, uint> hashFunc = HashFuncs.CreateUniversal();
-			public int Hash(TKey key) => (int)hashFunc((uint)(key?.GetHashCode() ?? 0), bitSize);
+			int Hash(TKey key) => (int)hashFunc((uint)(key?.GetHashCode() ?? 0), bitSize);
 
 			public Container(int bitSize, IEqualityComparer<TKey> comparer)
 			{
 				this.bitSize = bitSize;
 				nodes = new Node[1 << bitSize];
 				Comparer = comparer;
+			}
+
+			public void Clear()
+			{
+				Array.Clear(nodes);
 			}
 
 			public bool Contains(TKey key)
@@ -91,8 +96,8 @@ namespace Oomph.Data.Collections10Lib.HashTables.Cuckoo.v100
 
 		public void Clear()
 		{
-			Array.Clear(container1.nodes);
-			Array.Clear(container2.nodes);
+			container1.Clear();
+			container2.Clear();
 			Count = 0;
 		}
 
