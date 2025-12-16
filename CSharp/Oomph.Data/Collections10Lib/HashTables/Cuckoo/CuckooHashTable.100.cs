@@ -28,6 +28,7 @@ namespace Oomph.Data.Collections10Lib.HashTables.Cuckoo.v100
 			public IEqualityComparer<TKey> Comparer { get; }
 			readonly Func<uint, int, uint> hashFunc = HashFuncs.CreateUniversal();
 			int Hash(TKey key) => (int)hashFunc((uint)(key?.GetHashCode() ?? 0), bitSize);
+			public Container opposite;
 
 			public Container(int bitSize, IEqualityComparer<TKey> comparer)
 			{
@@ -48,25 +49,20 @@ namespace Oomph.Data.Collections10Lib.HashTables.Cuckoo.v100
 				return node != null && Comparer.Equals(node.Item, key);
 			}
 
-			public bool AddIfEmpty(Node node)
+			// true: 存在する, false: 他のノードが存在する, null: ノードが存在しない
+			public bool? Contains2(TKey key)
 			{
-				var h = Hash(node.Item);
-				ref var n = ref nodes[h];
-				if (n == null)
-				{
-					n = node;
-					return true;
-				}
-				return false;
+				var h = Hash(key);
+				var node = nodes[h];
+				return node != null ? Comparer.Equals(node.Item, key) : null;
 			}
 
-			// 追い出されたノードを返します。
-			public Node Push(Node node)
+			public void Push(Node node)
 			{
 				var h = Hash(node.Item);
 				var n0 = nodes[h];
 				nodes[h] = node;
-				return n0;
+				if (n0 != null) opposite.Push(n0);
 			}
 
 			public bool Remove(TKey key)
@@ -90,9 +86,9 @@ namespace Oomph.Data.Collections10Lib.HashTables.Cuckoo.v100
 			comparer ??= ComparerHelper.GetDefaultEquality<TKey>();
 			container1 = new Container(bitSize, comparer);
 			container2 = new Container(bitSize, comparer);
+			container1.opposite = container2;
+			container2.opposite = container1;
 		}
-
-		Container GetOtherContainer(Container container) => container == container1 ? container2 : container1;
 
 		public void Clear()
 		{
@@ -108,18 +104,12 @@ namespace Oomph.Data.Collections10Lib.HashTables.Cuckoo.v100
 
 		public bool Add(TKey key)
 		{
-			if (Contains(key)) return false;
+			var r = container1.Contains2(key);
+			if (r == true || container2.Contains(key)) return false;
 			var node = new Node { Item = key };
-			if (!container1.AddIfEmpty(node))
-				Push(node, container2);
+			(r == null ? container1 : container2).Push(node);
 			++Count;
 			return true;
-		}
-
-		void Push(Node node, Container container)
-		{
-			var n = container.Push(node);
-			if (n != null) Push(n, GetOtherContainer(container));
 		}
 
 		public bool Remove(TKey key)
